@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="10dp"
+    android:paddingLeft="10dp"
+    android:paddingRight="10dp"
+    android:paddingTop="10dp"
+    tools:context=".G_Preferences_MW">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#603CAD"
+        android:orientation="vertical">
+
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/imageViewMW"
+            android:src="@drawable/wtw"
+            android:paddingTop="15dp"
+            android:paddingLeft="30dp"
+            android:layout_marginRight="30dp"/>
+
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="What To Wear"
+            android:textSize="20dp"
+
+            android:textColor="@android:color/white"
+            android:gravity="center"
+            />
+
+
+
+
+        <RadioGroup
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/rGMW"
+            android:layout_gravity="center_horizontal">
+
+            <RadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="50dp"
+                android:textColor="#FFFFFF"
+                android:text="Frau  "
+                android:id="@+id/rbFrau"
+                android:textSize="20dp"
+                android:layout_gravity="center_horizontal"
+                android:buttonTint="#FFFFFF"/>
+
+            <RadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Mann"
+                android:id="@+id/rbMann"
+                android:textColor="#FFFFFF"
+                android:textSize="20dp"
+                android:layout_gravity="center_horizontal"
+                android:buttonTint="#FFFFFF"/>
+        </RadioGroup>
+
+
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            >
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="#FFFFFF"
+            android:textSize="16dp"
+            android:gravity="center"
+            android:layout_marginTop="30dp"
+            android:text="Bitte wählen Sie Ihr Geschlecht aus!"
+            />
+
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/btnPreferenceMW"
+            android:text="Geschlecht übernehmen"
+            android:gravity="center"
+            android:layout_marginBottom="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_alignParentBottom="true"
+
+
+            />
+
+        </RelativeLayout>
+
+    </LinearLayout>
+
+
+</LinearLayout>
