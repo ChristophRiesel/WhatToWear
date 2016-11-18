@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">What To Wear</string>
+    <string name="Geschlecht">Geschlecht:</string>
+    <string name="PräferenzJacke">Präferenz Jacke:</string>
+    <string name="PräferenzHose">Präferenz Hose:</string>
+    <string name="ChangePreferences">Präferenzen ändern</string>
 </resources>

@@ -12,16 +12,16 @@ public class G_Preferences_MW extends AppCompatActivity {
 
     int valueJacke;
     int valueHose;
-
+    Preferences pref;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        pref = new Preferences();
         Intent intent = getIntent();
         Bundle params = intent.getExtras();
         if(params != null){
-            valueJacke = params.getInt("jacke");
-            valueHose = params.getInt("hose");
+            pref = (Preferences) params.getSerializable("preferences");
         }
 
 
@@ -38,14 +38,13 @@ public class G_Preferences_MW extends AppCompatActivity {
                 RadioButton rBFrau = (RadioButton) findViewById(R.id.rbFrau);
                 RadioButton rBMann = (RadioButton) findViewById(R.id.rbMann);
                 if(rBFrau.isChecked())
-                    geschlecht = "Frau";
+                    geschlecht = "weiblich";
                 else if(rBMann.isChecked())
-                    geschlecht = "Mann";
+                    geschlecht = "männlich";
 
                 Intent intent = new Intent(G_Preferences_MW.this, G_Uebersicht.class);
-                intent.putExtra("jacke", valueJacke);
-                intent.putExtra("hose", valueHose);
-                intent.putExtra("geschlecht", geschlecht);
+                pref.setGeschlecht(geschlecht);
+                intent.putExtra("preferences", pref);
                 startActivity(intent);
 
             }

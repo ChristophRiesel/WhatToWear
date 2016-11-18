@@ -8,37 +8,28 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.NumberPicker;
 
+import biz.borealis.numberpicker.OnValueChangeListener;
+
 public class G_Preferences_Hose extends AppCompatActivity {
 
-    int valueJacke;
+    int value;
+    Preferences pref;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.g_preference_hose);
+        pref = new Preferences();
 
         Intent intent = getIntent();
         Bundle params = intent.getExtras();
         if(params != null){
-            valueJacke = params.getInt("jacke");
+            pref = (Preferences) params.getSerializable("preferences");
         }
 
 
 
-        final int minValue = -50;
-        final int maxValue = 50;
-        final NumberPicker numberPicker = (NumberPicker) findViewById(R.id.npPreferenceHose);
-        numberPicker.setMinValue(0);
-        numberPicker.setMaxValue(maxValue - minValue);
-        numberPicker.setValue(numberPicker.getValue() - minValue);
-        numberPicker.setFormatter(new NumberPicker.Formatter() {
-            @Override
-            public String format(int index) {
-                return Integer.toString(index - minValue);
-            }
-        });
-
-
-        numberPicker.setBackgroundColor(Color.WHITE);
+        final com.shawnlin.numberpicker.NumberPicker numberPicker = (com.shawnlin.numberpicker.NumberPicker) findViewById(R.id.npPreferenceHose);
+        numberPicker.setValue(20);
 
 
         Button button = (Button) findViewById(R.id.btnPreferenceHose);
@@ -47,9 +38,11 @@ public class G_Preferences_Hose extends AppCompatActivity {
             public void onClick(View v) {
 
                 Intent intent = new Intent(G_Preferences_Hose.this, G_Preferences_MW.class);
-                intent.putExtra("jacke", valueJacke);
-                int valueHose = numberPicker.getValue();
-                intent.putExtra("hose", valueHose);
+
+
+                int valueHose= numberPicker.getValue();
+                pref.setValueHose(valueHose);
+                intent.putExtra("preferences", pref);
                 startActivity(intent);
 
 

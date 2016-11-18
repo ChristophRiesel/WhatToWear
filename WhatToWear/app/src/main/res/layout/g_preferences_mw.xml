@@ -50,7 +50,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="50dp"
                 android:textColor="#FFFFFF"
-                android:text="Frau  "
+                android:text="weiblich  "
                 android:id="@+id/rbFrau"
                 android:textSize="20dp"
                 android:layout_gravity="center_horizontal"
@@ -59,7 +59,7 @@
             <RadioButton
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Mann"
+                android:text="männlich"
                 android:id="@+id/rbMann"
                 android:textColor="#FFFFFF"
                 android:textSize="20dp"

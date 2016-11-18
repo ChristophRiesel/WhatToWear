@@ -29,6 +29,7 @@ import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
+import java.util.SortedMap;
 
 public class G_Uebersicht extends AppCompatActivity {
 
@@ -36,9 +37,9 @@ public class G_Uebersicht extends AppCompatActivity {
     ViewPager viewPager;
     TabLayout tabLayout;
 
-    int valueJacke;
-    int valueHose;
-    String valueGeschlecht;
+
+
+    Preferences pref;
     String filename = "WhatToWear.txt";
 
 
@@ -50,7 +51,11 @@ public class G_Uebersicht extends AppCompatActivity {
         switch (id) {
 
             case R.id.menusettings:
-                Toast.makeText(G_Uebersicht.this, "MenuEinstellung", Toast.LENGTH_SHORT).show();
+
+                Intent intent = new Intent(G_Uebersicht.this, G_Settings.class);
+                intent.putExtra("preferences", pref);
+                startActivity(intent);
+
                 break;
 
             case R.id.menu10days:
@@ -77,12 +82,10 @@ public class G_Uebersicht extends AppCompatActivity {
         Intent intent = getIntent();
         Bundle params = intent.getExtras();
         if (params != null) {
-            valueJacke = params.getInt("jacke");
-            valueHose = params.getInt("hose");
-            valueGeschlecht = params.getString("geschlecht").toString();
+            pref = (Preferences) params.getSerializable("preferences");
         }
 
-        writeToFile(valueJacke, valueHose, valueGeschlecht);
+        writeToFile(pref);
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
 
@@ -132,12 +135,15 @@ public class G_Uebersicht extends AppCompatActivity {
 
     }
 
-    private void writeToFile(int valueJacke, int valueHose, String valueGeschlecht) {
+    private void writeToFile(Preferences p) {
 
-        SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(this);
-        SharedPreferences.Editor editor = settings.edit();
-        String line = valueJacke + ";" + valueHose + ";"+ valueGeschlecht;
-        editor.putString("WhatToWear", line);
-        editor.commit();
+        if(p!=null){
+            SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(this);
+            SharedPreferences.Editor editor = settings.edit();
+            String line = p.getValueJacke() + ";" + p.getValueHose() + ";"+ p.getGeschlecht();
+            editor.putString("WhatToWear", line);
+            editor.commit();
+        }
+
     }
 }

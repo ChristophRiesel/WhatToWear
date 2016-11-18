@@ -2,6 +2,7 @@
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:paddingLeft="10dp"
@@ -36,15 +37,7 @@
             android:gravity="center"
             />
 
-        <NumberPicker
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/npPreferenceHose"
-            android:layout_marginTop="30dp"
-            android:layout_gravity="center"
 
-
-            />
 
         <TextView
             android:layout_width="match_parent"
@@ -57,10 +50,33 @@
             android:text="Ab wie viel °C würden Sie eine kurze Hose anziehen?"
             />
 
+        <com.shawnlin.numberpicker.NumberPicker
+            android:id="@+id/npPreferenceHose"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="90dp"
+            android:layout_gravity="center"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:layout_centerInParent="true"
+            app:np_orientation = "horizontal"
+            app:np_width="260dp"
+            app:np_height="90dp"
+            app:np_dividerColor="#FFFFFF"
+            app:np_max="35"
+            app:np_min="15"
+            app:np_textColor="#FFFFFF"
+            app:np_textSize="23dp"
+            app:np_typeface="NORMAL" />
+
+
+
+
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             >
+
+
         <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
