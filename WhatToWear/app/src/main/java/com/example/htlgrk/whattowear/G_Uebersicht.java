@@ -1,14 +1,18 @@
 package com.example.htlgrk.whattowear;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
+import android.location.Location;
 import android.media.Image;
 import android.net.Uri;
 import android.os.Environment;
 import android.preference.PreferenceManager;
 import android.support.design.widget.TabLayout;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -19,6 +23,10 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TableLayout;
 import android.widget.Toast;
+
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.LocationServices;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -59,7 +67,7 @@ public class G_Uebersicht extends AppCompatActivity {
                 break;
 
             case R.id.menu10days:
-                Toast.makeText(G_Uebersicht.this, "10Tage", Toast.LENGTH_SHORT).show();
+                Toast.makeText(G_Uebersicht.this, "10Tage-Übersicht", Toast.LENGTH_SHORT).show();
                 break;
         }
 
@@ -137,13 +145,15 @@ public class G_Uebersicht extends AppCompatActivity {
 
     private void writeToFile(Preferences p) {
 
-        if(p!=null){
+        if (p != null) {
             SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(this);
             SharedPreferences.Editor editor = settings.edit();
-            String line = p.getValueJacke() + ";" + p.getValueHose() + ";"+ p.getGeschlecht();
+            String line = p.getValueJacke() + ";" + p.getValueHose() + ";" + p.getGeschlecht();
             editor.putString("WhatToWear", line);
             editor.commit();
         }
 
     }
+
+
 }

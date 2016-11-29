@@ -4,4 +4,5 @@
     <string name="PräferenzJacke">Präferenz Jacke:</string>
     <string name="PräferenzHose">Präferenz Hose:</string>
     <string name="ChangePreferences">Präferenzen ändern</string>
+    <string name="title_activity_maps">Map</string>
 </resources>
