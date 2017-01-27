@@ -57,10 +57,12 @@ public class G_Uebersicht extends AppCompatActivity implements YahooWheaterCallb
 
 
 
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.g_uebersicht_screenslide);
+        setContentView(R.layout.loadscreen);
 
         Intent intent = getIntent();
         Bundle params = intent.getExtras();
@@ -106,6 +108,7 @@ public class G_Uebersicht extends AppCompatActivity implements YahooWheaterCallb
                         //dialog = new ProgressDialog(G_Uebersicht.this);
                         //dialog.setMessage("loading");
                         //dialog.show();
+
                         service.refreshWeather(locationstring);
                     }
                 } catch (Exception e) {
@@ -190,7 +193,9 @@ public class G_Uebersicht extends AppCompatActivity implements YahooWheaterCallb
 
 
 
-
+        setContentView(R.layout.g_uebersicht_screenslide);
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
         //dialog.dismiss();
 
         // Add the fragment to the 'fragment_container' FrameLayout
