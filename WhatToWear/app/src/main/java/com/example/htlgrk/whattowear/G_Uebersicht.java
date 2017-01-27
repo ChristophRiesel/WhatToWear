@@ -265,5 +265,10 @@ public class G_Uebersicht extends AppCompatActivity implements YahooWheaterCallb
         }
     }
 
+    @Override
+    protected void onDestroy() {
+        this.finish();
+    }
 
+    
 }
