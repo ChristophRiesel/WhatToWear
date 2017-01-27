@@ -71,10 +71,6 @@ public class G_Uebersicht extends AppCompatActivity implements YahooWheaterCallb
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        //activate Viewapger
-        mViewPager = (ViewPager) findViewById(R.id.pager);
-        mViewPager.setAdapter(new PagerAdapter(
-                this.getSupportFragmentManager(), this));
 
         locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
         locationListener = new LocationListener() {
@@ -107,9 +103,9 @@ public class G_Uebersicht extends AppCompatActivity implements YahooWheaterCallb
 
 
                         service = new YahooWeatherService(G_Uebersicht.this);
-                        dialog = new ProgressDialog(G_Uebersicht.this);
-                        dialog.setMessage("loading");
-                        dialog.show();
+                        //dialog = new ProgressDialog(G_Uebersicht.this);
+                        //dialog.setMessage("loading");
+                        //dialog.show();
                         service.refreshWeather(locationstring);
                     }
                 } catch (Exception e) {
@@ -186,22 +182,30 @@ public class G_Uebersicht extends AppCompatActivity implements YahooWheaterCallb
         //"\u00B0"  = GRAD SYMBOL
         FragmentOne fragmentOne = new FragmentOne();
 
-        Bundle args = new Bundle();
+        /*Bundle args = new Bundle();
         //WeatherData wd = new WeatherData(10, 15, 5, "cloudy", 30, new Date(), "c");
         args.putSerializable("wd", weatherArray);
         FragmentOne fragment = new FragmentOne();
-        fragment.setArguments(args);
+        fragment.setArguments(args);*/
 
-        dialog.dismiss();
+
+
+
+        //dialog.dismiss();
 
         // Add the fragment to the 'fragment_container' FrameLayout
-        getSupportFragmentManager().beginTransaction()
-                .add(R.id.fragment_container, fragmentOne).commit();
+
+        //activate Viewapger
+        mViewPager = (ViewPager) findViewById(R.id.pager);
+        mViewPager.setAdapter(new PagerAdapter(
+                this.getSupportFragmentManager(), this));
+        //getSupportFragmentManager().beginTransaction()
+              //  .replace(R.id.fragment_container, fragmentOne).commit();
     }
 
     @Override
     public void serviceFailure(Exception ex) {
-        dialog.dismiss();
+        //dialog.dismiss();
         Toast.makeText(this, ex.getMessage(), Toast.LENGTH_SHORT).show();
     }
 
@@ -222,9 +226,9 @@ public class G_Uebersicht extends AppCompatActivity implements YahooWheaterCallb
             if (position == 0) {
                 Bundle args = new Bundle();
                 //WeatherData wd = new WeatherData(10, 15, 5, "cloudy", 30, new Date(), "c");
-                //args.putSerializable("wd", weatherArray);
+                args.putSerializable("wd", weatherArray);
                 FragmentOne fragment = new FragmentOne();
-                //fragment.setArguments(args);
+                fragment.setArguments(args);
 
                 return fragment;
             } else
