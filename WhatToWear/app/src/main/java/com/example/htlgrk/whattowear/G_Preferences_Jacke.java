@@ -5,6 +5,9 @@ import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Parcelable;
 import android.preference.PreferenceManager;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -70,6 +73,7 @@ public class G_Preferences_Jacke extends AppCompatActivity {
             Preferences pref = new Preferences(valueJacke, valueHose, valueGeschlecht);
             intent.putExtra("preferences",  pref);
             startActivity(intent);
+
         }
     }
 }

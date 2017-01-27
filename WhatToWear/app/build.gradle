@@ -6,7 +6,7 @@ android {
 
     defaultConfig {
         applicationId "com.example.htlgrk.whattowear"
-        minSdkVersion 22
+        minSdkVersion 21
         targetSdkVersion 23
         versionCode 1
         versionName "1.0"
@@ -28,4 +28,5 @@ dependencies {
     compile 'com.shawnlin:number-picker:2.2.0'
     compile 'com.google.android.gms:play-services:8.4.0'
     compile group: 'org.slf4j', name: 'slf4j-api', version: '1.7.21'
+
 }

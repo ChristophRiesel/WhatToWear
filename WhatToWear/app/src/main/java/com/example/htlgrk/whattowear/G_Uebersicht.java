@@ -1,76 +1,161 @@
 package com.example.htlgrk.whattowear;
 
-import android.Manifest;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
-import android.graphics.Color;
+import android.location.Address;
+import android.location.Criteria;
+import android.location.Geocoder;
 import android.location.Location;
-import android.media.Image;
-import android.net.Uri;
-import android.os.Environment;
+import android.location.LocationListener;
+import android.location.LocationManager;
+import android.os.Handler;
 import android.preference.PreferenceManager;
-import android.support.design.widget.TabLayout;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.ImageView;
-import android.widget.TableLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.location.LocationServices;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.FileWriter;
+import com.example.htlgrk.whattowear.service.YahooWeatherService;
+import com.example.htlgrk.whattowear.service.YahooWheaterCallback;
+import com.example.htlgrk.whattowear.wheather_data.Channel;
+import com.example.htlgrk.whattowear.wheather_data.Item;
+
 import java.io.IOException;
-import java.io.ObjectOutputStream;
-import java.io.OutputStreamWriter;
-import java.io.PrintWriter;
-import java.util.SortedMap;
+import java.util.Date;
+import java.util.List;
+import java.util.Locale;
 
-public class G_Uebersicht extends AppCompatActivity {
+public class G_Uebersicht extends AppCompatActivity implements YahooWheaterCallback {
 
+    ViewPager mViewPager;
     Toolbar toolbar;
-    ViewPager viewPager;
-    TabLayout tabLayout;
-
-
 
     Preferences pref;
     String filename = "WhatToWear.txt";
 
+    WeatherData[] weatherArray;
+    Location mLastLocation;
+
+    private YahooWeatherService service;
+    private ProgressDialog dialog;
+
+    LocationManager locationManager;
+    LocationListener locationListener;
+
+
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.g_uebersicht_screenslide);
+
+        Intent intent = getIntent();
+        Bundle params = intent.getExtras();
+        if (params != null) {
+            pref = (Preferences) params.getSerializable("preferences");
+        }
+        writeToFile(pref);
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
+        //activate Viewapger
+        mViewPager = (ViewPager) findViewById(R.id.pager);
+        mViewPager.setAdapter(new PagerAdapter(
+                this.getSupportFragmentManager(), this));
+
+        locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
+        locationListener = new LocationListener() {
+            public void onLocationChanged(Location location) {
+                try {
+                    if(location!=null) {
+                        mLastLocation = location;
+                        List<Address> addresses;
+                        Geocoder geocoder = new Geocoder(getApplicationContext(), Locale.getDefault());
+
+                        addresses = geocoder.getFromLocation(location.getLatitude(), location.getLongitude(), 1); // Here 1 represent max location result to returned, by documents it recommended 1 to 5
+
+                        String address = addresses.get(0).getAddressLine(0); // If any additional address line present than only, check with max available address lines by getMaxAddressLineIndex()
+                        String city = addresses.get(0).getLocality();
+                        String state = addresses.get(0).getAdminArea();
+                        String country = addresses.get(0).getCountryName();
+                        String postalCode = addresses.get(0).getPostalCode();
+                        String knownName = addresses.get(0).getFeatureName(); // Only if available else return NULL
+
+                        //ö ä ü - behandeln
+                        country = country.replace("ä","ae");
+                        country = country.replace("ö","oe");
+                        country = country.replace("ü","ue");
+                        country = country.replace("Ä","Ae");
+                        country = country.replace("Ö","Oe");
+                        country = country.replace("Ü","Ue");
+
+
+                        String locationstring = city + "," + postalCode + "," + country;
+
+
+                        service = new YahooWeatherService(G_Uebersicht.this);
+                        dialog = new ProgressDialog(G_Uebersicht.this);
+                        dialog.setMessage("loading");
+                        dialog.show();
+                        service.refreshWeather(locationstring);
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
+
+            public void onStatusChanged(String provider, int status, Bundle extras) {
+            }
+
+            public void onProviderEnabled(String provider) {
+            }
+
+            public void onProviderDisabled(String provider) {
+            }
+        };
+
+
+        // Register the listener with the Location Manager to receive location updates
+        /*try {
+            locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, locationListener);
+        } catch (SecurityException e) {
+            e.printStackTrace();
+        }*/
+
+        requestGPSLocation();
+        if(mLastLocation == null){
+            requestNetworkLocation();
+        }
+    }
+
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-
         int id = item.getItemId();
-
         switch (id) {
-
             case R.id.menusettings:
-
                 Intent intent = new Intent(G_Uebersicht.this, G_Settings.class);
                 intent.putExtra("preferences", pref);
                 startActivity(intent);
-
                 break;
-
             case R.id.menu10days:
                 Toast.makeText(G_Uebersicht.this, "10Tage-Übersicht", Toast.LENGTH_SHORT).show();
                 break;
         }
-
         return super.onOptionsItemSelected(item);
     }
 
@@ -81,70 +166,7 @@ public class G_Uebersicht extends AppCompatActivity {
         return super.onCreateOptionsMenu(menu);
     }
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.g__uebersicht_layout);
-
-
-        Intent intent = getIntent();
-        Bundle params = intent.getExtras();
-        if (params != null) {
-            pref = (Preferences) params.getSerializable("preferences");
-        }
-
-        writeToFile(pref);
-
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
-
-        setSupportActionBar(toolbar);
-
-
-        viewPager = (ViewPager) findViewById(R.id.viewpager);
-
-        ViewPagerAdapter1 viewPagerAdapter1 = new ViewPagerAdapter1(getSupportFragmentManager());
-        viewPager.setAdapter(viewPagerAdapter1);
-
-        tabLayout = (TabLayout) findViewById(R.id.tablayout);
-        tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
-        tabLayout.setupWithViewPager(viewPager);
-        tabLayout.setVisibility(View.INVISIBLE);
-        tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
-            @Override
-            public void onTabSelected(TabLayout.Tab tab) {
-
-                viewPager.setCurrentItem(tab.getPosition());
-
-            }
-
-            @Override
-            public void onTabUnselected(TabLayout.Tab tab) {
-
-            }
-
-            @Override
-            public void onTabReselected(TabLayout.Tab tab) {
-
-            }
-        });
-
-
-        ImageView imageview = (ImageView) findViewById(R.id.imageViewYahoo);
-        imageview.setVisibility(View.VISIBLE);
-        imageview.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String url = "https://www.yahoo.com/?ilc=401";
-                Intent i = new Intent(Intent.ACTION_VIEW);
-                i.setData(Uri.parse(url));
-                startActivity(i);
-            }
-        });
-
-    }
-
     private void writeToFile(Preferences p) {
-
         if (p != null) {
             SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(this);
             SharedPreferences.Editor editor = settings.edit();
@@ -152,7 +174,86 @@ public class G_Uebersicht extends AppCompatActivity {
             editor.putString("WhatToWear", line);
             editor.commit();
         }
+    }
 
+    @Override
+    public void serviceSuccess(Channel channel) {
+          Item i = channel.getItem();
+        weatherArray = new WeatherData[10];
+        weatherArray[0] = new WeatherData(i.getCondition().getTemperature(), 0, 0,
+                i.getCondition().getDescription(), 40 , new Date(), channel.getUnits().getTemperature());
+
+        //"\u00B0"  = GRAD SYMBOL
+        FragmentOne fragmentOne = new FragmentOne();
+
+        Bundle args = new Bundle();
+        //WeatherData wd = new WeatherData(10, 15, 5, "cloudy", 30, new Date(), "c");
+        args.putSerializable("wd", weatherArray);
+        FragmentOne fragment = new FragmentOne();
+        fragment.setArguments(args);
+
+        dialog.dismiss();
+
+        // Add the fragment to the 'fragment_container' FrameLayout
+        getSupportFragmentManager().beginTransaction()
+                .add(R.id.fragment_container, fragmentOne).commit();
+    }
+
+    @Override
+    public void serviceFailure(Exception ex) {
+        dialog.dismiss();
+        Toast.makeText(this, ex.getMessage(), Toast.LENGTH_SHORT).show();
+    }
+
+
+    public class PagerAdapter extends FragmentPagerAdapter {
+
+        G_Uebersicht activity;
+        public PagerAdapter(FragmentManager fm, G_Uebersicht activity)
+        {
+            super(fm);
+            this.activity = activity;
+        }
+
+
+        @Override
+        public Fragment getItem(int position) {
+            /** Show a Fragment based on the position of the current screen */
+            if (position == 0) {
+                Bundle args = new Bundle();
+                //WeatherData wd = new WeatherData(10, 15, 5, "cloudy", 30, new Date(), "c");
+                //args.putSerializable("wd", weatherArray);
+                FragmentOne fragment = new FragmentOne();
+                //fragment.setArguments(args);
+
+                return fragment;
+            } else
+                return new FragmentTwo();
+        }
+
+        @Override
+        public int getCount() {
+            // Show 2 total pages.
+            return 2;
+        }
+    }
+
+
+    private void requestGPSLocation(){
+        try {
+            locationManager.requestLocationUpdates(
+                    LocationManager.GPS_PROVIDER, 0, 0, locationListener);
+        }catch (SecurityException ex){
+            ex.printStackTrace();
+        }
+    }
+    private void requestNetworkLocation(){
+        try {
+            locationManager.requestLocationUpdates(
+                    LocationManager.NETWORK_PROVIDER, 0, 0, locationListener);
+        }catch (SecurityException ex){
+            ex.printStackTrace();
+        }
     }
 
 
