@@ -178,36 +178,29 @@ public class G_Uebersicht extends AppCompatActivity implements YahooWheaterCallb
     @Override
     public void serviceSuccess(Channel channel) {
           Item i = channel.getItem();
-        weatherArray = new WeatherData[10];
-        weatherArray[0] = new WeatherData(i.getCondition().getTemperature(), 0, 0,
-                i.getCondition().getDescription(), 40 , new Date(), channel.getUnits().getTemperature());
-
-        //"\u00B0"  = GRAD SYMBOL
-        FragmentOne fragmentOne = new FragmentOne();
-
-        /*Bundle args = new Bundle();
-        //WeatherData wd = new WeatherData(10, 15, 5, "cloudy", 30, new Date(), "c");
-        args.putSerializable("wd", weatherArray);
-        FragmentOne fragment = new FragmentOne();
-        fragment.setArguments(args);*/
-
+        weatherArray = i.getWeatherData();
+        //aktuelles Wetterobjekt hat mehr Daten // z.b. aktuelle Temperaturs
+        String unit = channel.getUnits().getTemperature();
+        weatherArray[0].setCurrentTemp(i.getCondition().getTemperature());
+        weatherArray[0].setDescription(i.getCondition().getDescription());
+        weatherArray[0].setCode(i.getCondition().getCode());
 
 
         setContentView(R.layout.g_uebersicht_screenslide);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        //dialog.dismiss();
-
-        // Add the fragment to the 'fragment_container' FrameLayout
 
         //activate Viewapger
         mViewPager = (ViewPager) findViewById(R.id.pager);
         mViewPager.setAdapter(new PagerAdapter(
                 this.getSupportFragmentManager(), this));
+<<<<<<< HEAD
         //getSupportFragmentManager().beginTransaction()
               //  .replace(R.id.fragment_container, fragmentOne).commit();
 
 
+=======
+>>>>>>> origin/master
     }
 
     @Override
