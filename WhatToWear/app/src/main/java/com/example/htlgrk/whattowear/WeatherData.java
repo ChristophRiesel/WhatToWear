@@ -26,6 +26,15 @@ public class WeatherData implements Serializable {
         this.format = format;
     }
 
+    public WeatherData(int tempHigh, int tempLow, String description, int code, Date date, String format) {
+        this.tempHigh = tempHigh;
+        this.tempLow = tempLow;
+        this.description = description;
+        this.code = code;
+        this.date = date;
+        this.format = format;
+    }
+
     public int getCurrentTemp() {
         return currentTemp;
     }

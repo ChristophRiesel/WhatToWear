@@ -21,7 +21,6 @@ public class Channel implements JSONPopulator {
     public void populate(JSONObject data) {
         units = new Units();
         units.populate(data.optJSONObject("units"));
-
         item = new Item();
         item.populate((data.optJSONObject("item")));
     }
