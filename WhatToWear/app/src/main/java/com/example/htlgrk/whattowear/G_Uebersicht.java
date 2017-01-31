@@ -43,7 +43,7 @@ public class G_Uebersicht extends AppCompatActivity implements YahooWheaterCallb
     ViewPager mViewPager;
     Toolbar toolbar;
 
-    Preferences pref;
+    public Preferences pref;
     String filename = "WhatToWear.txt";
 
     WeatherData[] weatherArray;
@@ -206,6 +206,8 @@ public class G_Uebersicht extends AppCompatActivity implements YahooWheaterCallb
                 this.getSupportFragmentManager(), this));
         //getSupportFragmentManager().beginTransaction()
               //  .replace(R.id.fragment_container, fragmentOne).commit();
+
+
     }
 
     @Override
@@ -228,10 +230,17 @@ public class G_Uebersicht extends AppCompatActivity implements YahooWheaterCallb
         @Override
         public Fragment getItem(int position) {
             /** Show a Fragment based on the position of the current screen */
+            if(weatherArray[0] != null){
+                try {
+                    locationManager.removeUpdates(locationListener);
+                }catch (SecurityException sx){
+                    sx.printStackTrace();
+                }
+            }
             if (position == 0) {
                 Bundle args = new Bundle();
                 //WeatherData wd = new WeatherData(10, 15, 5, "cloudy", 30, new Date(), "c");
-                args.putSerializable("wd", weatherArray);
+                args.putSerializable("wd", weatherArray[position]);
                 FragmentOne fragment = new FragmentOne();
                 fragment.setArguments(args);
 
@@ -270,5 +279,5 @@ public class G_Uebersicht extends AppCompatActivity implements YahooWheaterCallb
         this.finish();
     }
 
-    
+
 }

@@ -12,6 +12,9 @@ public class FragmentTwo extends Fragment {
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_two, container,
                 false);
+
+
+        MyApplication.setClothes(20, 30, rootView);
         return rootView;
     }
 }

@@ -1,4 +1,4 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -7,14 +7,190 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin" >
 
-    <TextView
-        android:id="@+id/textViewPage1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
-        android:text="PAGE1" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="15°C"
+                android:id="@+id/aktTemp"
+                android:textColor="@color/colorPrimary"
+                android:textSize="35dp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="31.01.2017"
+                android:textColor="@color/colorPrimary"
+                android:textSize="24dp"
+                android:id="@+id/datum"
+                android:gravity="right"/>
+
+
+        </LinearLayout>
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Bewölkt"
+            android:id="@+id/tv_Wetterlage"
+            android:textColor="@color/colorPrimary"
+            android:textSize="25dp"
+            />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="8°C - 18°C"
+            android:id="@+id/tv_tempRange"
+            android:textColor="@color/colorPrimary"
+            android:textSize="16dp"
+            />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="130dp"
+                    android:text="Wir empfehlen:"
+                    android:textColor="@color/colorPrimary"/>
+
+                <RadioButton
+                    android:text=""
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/rbJacke"
+                    android:checked="true"
+                    android:buttonTint="@color/colorPrimaryDark"
+                    android:layout_alignTop="@+id/frameLayout"
+                    android:layout_alignParentStart="true"
+                    android:layout_toStartOf="@+id/frameLayout"
+                    android:layout_marginTop="10dp"/>
+
+                <RadioButton
+                    android:text=""
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/rbOberteil"
+                    android:checked="true"
+                    android:buttonTint="@color/colorPrimaryDark"
+                    android:layout_alignTop="@+id/frameLayout"
+                    android:layout_alignParentStart="true"
+                    android:layout_toStartOf="@+id/frameLayout"
+                    android:layout_marginTop="10dp"/>
+                <RadioButton
+                    android:text=""
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/rbHose"
+                    android:checked="true"
+                    android:buttonTint="@color/colorPrimaryDark"
+                    android:layout_alignTop="@+id/frameLayout"
+                    android:layout_alignParentStart="true"
+                    android:layout_toStartOf="@+id/frameLayout"
+                    android:layout_marginTop="10dp"/>
+
+            </LinearLayout>
 
 
 
-</RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                >
+
+                <FrameLayout
+                    android:layout_width="200dp"
+                    android:layout_height="450dp"
+                    android:layout_alignParentBottom="true"
+                    android:layout_alignParentEnd="true"
+                    android:id="@+id/frameLayout">
+
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:id="@+id/iv_mann"
+                        android:src="@drawable/mann"/>
+
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:id="@+id/iv_kurzehose"
+                        android:src="@drawable/kurzehose"/>
+
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:id="@+id/iv_langehose"
+                        android:src="@drawable/langehose"/>
+
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:id="@+id/iv_tshirt"
+                        android:src="@drawable/tshirt"/>
+
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:id="@+id/iv_pullover"
+                        android:src="@drawable/pullover"/>
+
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:id="@+id/iv_schuhe"
+                        android:src="@drawable/schuhe"/>
+
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:id="@+id/iv_duennejacke"
+                        android:src="@drawable/duennejacke"
+                        />
+
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:src="@drawable/dickejacke"
+                        android:id="@+id/iv_dickejacke"
+                        />
+                </FrameLayout>
+
+
+
+
+
+
+            </RelativeLayout>
+        </LinearLayout>
+
+
+
+
+
+    </LinearLayout>
+
+
+
+
+</LinearLayout>

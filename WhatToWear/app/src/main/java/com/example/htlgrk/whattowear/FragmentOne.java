@@ -11,7 +11,7 @@ import android.widget.TextView;
 
 public class FragmentOne extends Fragment {
 
-    WeatherData[] wd;
+    WeatherData wd;
     int fragposition = 0;
 
     //OnHeadlineSelectedListener mCallback;
@@ -25,11 +25,18 @@ public class FragmentOne extends Fragment {
                 false);
 
         if (getArguments() != null) {
-            wd = (WeatherData[]) getArguments().getSerializable("wd");
-            if (wd[fragposition] != null) {
-                TextView tv1 = (TextView) rootView.findViewById(R.id.textViewPage1);
-                WeatherData wdo = wd[0];
-                tv1.setText(wdo.getCurrentTemp() + " " + wdo.getDescription() + " " + wdo.getDate());
+            if (wd != null) {
+                WeatherData wdo = (WeatherData) getArguments().getSerializable("wd");
+
+                TextView akt = (TextView) rootView.findViewById(R.id.aktTemp);
+                akt.setText(wdo.currentTemp+"");
+                TextView datum = (TextView) rootView.findViewById(R.id.datum);
+                datum.setText(wdo.date.toString());
+                TextView desc = (TextView) rootView.findViewById(R.id.tv_Wetterlage);
+                desc.setText(wdo.description);
+                TextView range = (TextView) rootView.findViewById(R.id.tv_tempRange);
+                range.setText(wdo.getTempLow() + "°C - " + wdo.getTempHigh() + "°C");
+                MyApplication.setClothes(wdo.getTempLow(), wdo.getTempHigh(), rootView);
             }
         }
 
