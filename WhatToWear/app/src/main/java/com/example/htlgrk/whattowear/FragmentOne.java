@@ -9,6 +9,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import java.text.SimpleDateFormat;
+
 public class FragmentOne extends Fragment {
 
     WeatherData wd;
@@ -25,18 +27,18 @@ public class FragmentOne extends Fragment {
                 false);
 
         if (getArguments() != null) {
+            wd = (WeatherData) getArguments().getSerializable("wd");
             if (wd != null) {
-                WeatherData wdo = (WeatherData) getArguments().getSerializable("wd");
-
                 TextView akt = (TextView) rootView.findViewById(R.id.aktTemp);
-                akt.setText(wdo.currentTemp+"");
+                akt.setText(wd.currentTemp+"");
                 TextView datum = (TextView) rootView.findViewById(R.id.datum);
-                datum.setText(wdo.date.toString());
+                SimpleDateFormat df = new SimpleDateFormat("EEEE, dd.MM.yyyy");
+                datum.setText(df.format(wd.date)); //FORMAT
                 TextView desc = (TextView) rootView.findViewById(R.id.tv_Wetterlage);
-                desc.setText(wdo.description);
+                desc.setText(wd.description);
                 TextView range = (TextView) rootView.findViewById(R.id.tv_tempRange);
-                range.setText(wdo.getTempLow() + "°C - " + wdo.getTempHigh() + "°C");
-                MyApplication.setClothes(wdo.getTempLow(), wdo.getTempHigh(), rootView);
+                range.setText(wd.getTempLow() + "°C bis " + wd.getTempHigh() + "°C");
+                MyApplication.setClothes(wd.getTempLow(), wd.getTempHigh(), rootView);
             }
         }
 

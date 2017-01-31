@@ -194,13 +194,8 @@ public class G_Uebersicht extends AppCompatActivity implements YahooWheaterCallb
         mViewPager = (ViewPager) findViewById(R.id.pager);
         mViewPager.setAdapter(new PagerAdapter(
                 this.getSupportFragmentManager(), this));
-<<<<<<< HEAD
         //getSupportFragmentManager().beginTransaction()
               //  .replace(R.id.fragment_container, fragmentOne).commit();
-
-
-=======
->>>>>>> origin/master
     }
 
     @Override
