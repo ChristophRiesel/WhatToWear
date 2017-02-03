@@ -35,7 +35,7 @@ public class FragmentFive extends Fragment {
                 TextView desc = (TextView) rootView.findViewById(R.id.tv_Wetterlage);
                 desc.setText(wd.description);
                 TextView range = (TextView) rootView.findViewById(R.id.tv_tempRange);
-                range.setText(wd.getTempLow() + "°C bis " + wd.getTempHigh() + "°C");
+                range.setText(wd.getTempLow() + "°C / " + wd.getTempHigh() + "°C");
                 MyApplication.setClothes(wd.getTempLow(), wd.getTempHigh(), rootView);
             }
         }

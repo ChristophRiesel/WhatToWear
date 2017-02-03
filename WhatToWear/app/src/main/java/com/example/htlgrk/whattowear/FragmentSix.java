@@ -28,6 +28,10 @@ public class FragmentSix extends Fragment {
             currentCity = (String) getArguments().getSerializable("location");
             if (wd != null) {
                 TextView loc = (TextView) rootView.findViewById(R.id.location);
+                if(currentCity.length()>=15){
+                    loc.setTextSize(12);
+                }
+
                 loc.setText(currentCity);
                 TextView datum = (TextView) rootView.findViewById(R.id.datum);
                 SimpleDateFormat df = new SimpleDateFormat("EEEE, dd.MM.yyyy");
@@ -35,11 +39,14 @@ public class FragmentSix extends Fragment {
                 TextView desc = (TextView) rootView.findViewById(R.id.tv_Wetterlage);
                 desc.setText(wd.description);
                 TextView range = (TextView) rootView.findViewById(R.id.tv_tempRange);
-                range.setText(wd.getTempLow() + "°C bis " + wd.getTempHigh() + "°C");
+                range.setText(wd.getTempLow() + "°C / " + wd.getTempHigh() + "°C");
                 MyApplication.setClothes(wd.getTempLow(), wd.getTempHigh(), rootView);
             }
         }
 
         return rootView;
     }
+
+
+
 }
