@@ -55,7 +55,7 @@ public class G_Uebersicht extends AppCompatActivity implements YahooWheaterCallb
     LocationManager locationManager;
     LocationListener locationListener;
 
-
+    String currentCity;
 
 
 
@@ -87,6 +87,7 @@ public class G_Uebersicht extends AppCompatActivity implements YahooWheaterCallb
 
                         String address = addresses.get(0).getAddressLine(0); // If any additional address line present than only, check with max available address lines by getMaxAddressLineIndex()
                         String city = addresses.get(0).getLocality();
+                        currentCity = city;
                         String state = addresses.get(0).getAdminArea();
                         String country = addresses.get(0).getCountryName();
                         String postalCode = addresses.get(0).getPostalCode();
@@ -225,29 +226,97 @@ public class G_Uebersicht extends AppCompatActivity implements YahooWheaterCallb
                     sx.printStackTrace();
                 }
             }
-            if (position == 0) {
-                Bundle args = new Bundle();
-                //WeatherData wd = new WeatherData(10, 15, 5, "cloudy", 30, new Date(), "c");
-                args.putSerializable("wd", weatherArray[position]);
-                FragmentOne fragment = new FragmentOne();
-                fragment.setArguments(args);
 
-                return fragment;
-            } else {
+
+            if(position == 2){
                 Bundle args = new Bundle();
-                //WeatherData wd = new WeatherData(10, 15, 5, "cloudy", 30, new Date(), "c");
+                args.putSerializable("location", currentCity);
                 args.putSerializable("wd", weatherArray[position]);
                 FragmentTwo fragment = new FragmentTwo();
                 fragment.setArguments(args);
 
                 return fragment;
+            }else if( position == 3){
+                Bundle args = new Bundle();
+                args.putSerializable("location", currentCity);
+                args.putSerializable("wd", weatherArray[position]);
+                FragmentThree fragment = new FragmentThree();
+                fragment.setArguments(args);
+
+                return fragment;
+            }else if(position == 4){
+                Bundle args = new Bundle();
+                args.putSerializable("location", currentCity);
+                args.putSerializable("wd", weatherArray[position]);
+                FragmentFour fragment = new FragmentFour();
+                fragment.setArguments(args);
+
+                return fragment;
+            }else if(position == 5){
+                Bundle args = new Bundle();
+                args.putSerializable("location", currentCity);
+                args.putSerializable("wd", weatherArray[position]);
+                FragmentFive fragment = new FragmentFive();
+                fragment.setArguments(args);
+
+                return fragment;
+            }else if(position == 6){
+                Bundle args = new Bundle();
+                args.putSerializable("location", currentCity);
+                args.putSerializable("wd", weatherArray[position]);
+                FragmentSix fragment = new FragmentSix();
+                fragment.setArguments(args);
+
+                return fragment;
+            }else if(position == 7){
+                Bundle args = new Bundle();
+                args.putSerializable("location", currentCity);
+                args.putSerializable("wd", weatherArray[position]);
+                FragmentSeven fragment = new FragmentSeven();
+                fragment.setArguments(args);
+
+                return fragment;
+            }else if(position == 8){
+                Bundle args = new Bundle();
+                args.putSerializable("location", currentCity);
+                args.putSerializable("wd", weatherArray[position]);
+                FragmentEight fragment = new FragmentEight();
+                fragment.setArguments(args);
+
+                return fragment;
+            }else if(position == 9){
+                Bundle args = new Bundle();
+                args.putSerializable("location", currentCity);
+                args.putSerializable("wd", weatherArray[position]);
+                FragmentNine fragment = new FragmentNine();
+                fragment.setArguments(args);
+
+                return fragment;
+            }else if(position == 10){
+                Bundle args = new Bundle();
+                args.putSerializable("location", currentCity);
+                args.putSerializable("wd", weatherArray[position]);
+                FragmentTen fragment = new FragmentTen();
+                fragment.setArguments(args);
+
+                return fragment;
+            }else{
+                Bundle args = new Bundle();
+                //WeatherData wd = new WeatherData(10, 15, 5, "cloudy", 30, new Date(), "c");
+                args.putSerializable("location", currentCity);
+                args.putSerializable("wd", weatherArray[position]);
+                FragmentOne fragment = new FragmentOne();
+                fragment.setArguments(args);
+
+                return fragment;
+
             }
         }
 
         @Override
         public int getCount() {
-            // Show 2 total pages.
-            return 2;
+            // Show 10 total pages.
+            return 10;
         }
     }
 

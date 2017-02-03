@@ -1,5 +1,6 @@
 package com.example.htlgrk.whattowear;
 
+
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -9,23 +10,25 @@ import android.widget.TextView;
 
 import java.text.SimpleDateFormat;
 
-public class FragmentOne extends Fragment {
+/**
+ * Created by Christoph on 03.02.2017.
+ */
 
+public class FragmentSeven extends Fragment {
     WeatherData wd;
-
+    String currentCity;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
-
-        View rootView = inflater.inflate(R.layout.fragment_main, container,
+        View rootView = inflater.inflate(R.layout.fragment_seven, container,
                 false);
 
         if (getArguments() != null) {
             wd = (WeatherData) getArguments().getSerializable("wd");
+            currentCity = (String) getArguments().getSerializable("location");
             if (wd != null) {
-                TextView akt = (TextView) rootView.findViewById(R.id.tv_aktTemp);
-                akt.setText(wd.currentTemp+"°C");
+                TextView loc = (TextView) rootView.findViewById(R.id.location);
+                loc.setText(currentCity);
                 TextView datum = (TextView) rootView.findViewById(R.id.datum);
                 SimpleDateFormat df = new SimpleDateFormat("EEEE, dd.MM.yyyy");
                 datum.setText(df.format(wd.date)); //FORMAT
@@ -39,5 +42,4 @@ public class FragmentOne extends Fragment {
 
         return rootView;
     }
-
-    }
+}
