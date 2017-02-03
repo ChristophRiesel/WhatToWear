@@ -1,4 +1,4 @@
-package com.example.htlgrk.whattowear;
+﻿package com.example.htlgrk.whattowear;
 
 import android.app.Application;
 import android.view.View;
@@ -172,10 +172,12 @@ public class MyApplication extends Application {
             case 46: return "";
             case 47: return "";
             case 3200: return "";
-
-            return "";
         }
-        <code number="0" description="tornado"/>
+        return "";
+    }
+}
+
+        /*<code number="0" description="tornado"/>
         <code number="1" description="tropical storm"/>
         <code number="2" description="hurricane"/>
         <code number="3" description="severe thunderstorms"/>
@@ -317,7 +319,6 @@ public class MyApplication extends Application {
             elseif($input == „Light Freezing Rain/Fog“) $data = „Leichter gefrierender Regen/Nebel“;
             elseif($input == „Drifting Snow“) $data = „Schneetreiben“;
             else $data = $input;
-            return $data;
-        }
-    }
-}
+            return $data;*/
+
+
