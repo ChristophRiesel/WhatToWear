@@ -14,7 +14,7 @@ import java.text.SimpleDateFormat;
 public class FragmentOne extends Fragment {
 
     WeatherData wd;
-    int fragposition = 0;
+    String currentCity;
 
     //OnHeadlineSelectedListener mCallback;
 
@@ -28,7 +28,10 @@ public class FragmentOne extends Fragment {
 
         if (getArguments() != null) {
             wd = (WeatherData) getArguments().getSerializable("wd");
+            currentCity = (String) getArguments().getSerializable("location");
             if (wd != null) {
+                TextView loc = (TextView) rootView.findViewById(R.id.location);
+                loc.setText(currentCity);
                 TextView akt = (TextView) rootView.findViewById(R.id.aktTemp);
                 akt.setText(wd.currentTemp+"°C");
                 TextView datum = (TextView) rootView.findViewById(R.id.datum);

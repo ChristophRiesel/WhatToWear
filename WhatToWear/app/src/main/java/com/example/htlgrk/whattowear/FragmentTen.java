@@ -10,17 +10,16 @@ import android.widget.TextView;
 import java.text.SimpleDateFormat;
 
 /**
- * Created by Christoph on 31.01.2017.
+ * Created by Christoph on 03.02.2017.
  */
 
-public class FragmentThree extends Fragment{
+public class FragmentTen extends Fragment{
     WeatherData wd;
     String currentCity;
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_three, container,
+        View rootView = inflater.inflate(R.layout.fragment_ten, container,
                 false);
 
         if (getArguments() != null) {

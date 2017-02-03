@@ -11,6 +11,7 @@ import java.text.SimpleDateFormat;
 
 public class FragmentTwo extends Fragment {
     WeatherData wd;
+    String currentCity;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -19,8 +20,10 @@ public class FragmentTwo extends Fragment {
 
         if (getArguments() != null) {
             wd = (WeatherData) getArguments().getSerializable("wd");
+            currentCity = (String) getArguments().getSerializable("location");
             if (wd != null) {
-
+                TextView loc = (TextView) rootView.findViewById(R.id.location);
+                loc.setText(currentCity);
                 TextView datum = (TextView) rootView.findViewById(R.id.datum);
                 SimpleDateFormat df = new SimpleDateFormat("EEEE, dd.MM.yyyy");
                 datum.setText(df.format(wd.date)); //FORMAT
