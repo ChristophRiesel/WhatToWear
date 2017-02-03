@@ -5,16 +5,33 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
+
+import java.text.SimpleDateFormat;
 
 public class FragmentTwo extends Fragment {
+    WeatherData wd;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_two, container,
                 false);
 
+        if (getArguments() != null) {
+            wd = (WeatherData) getArguments().getSerializable("wd");
+            if (wd != null) {
 
-        MyApplication.setClothes(20, 30, rootView);
+                TextView datum = (TextView) rootView.findViewById(R.id.datum);
+                SimpleDateFormat df = new SimpleDateFormat("EEEE, dd.MM.yyyy");
+                datum.setText(df.format(wd.date)); //FORMAT
+                TextView desc = (TextView) rootView.findViewById(R.id.tv_Wetterlage);
+                desc.setText(wd.description);
+                TextView range = (TextView) rootView.findViewById(R.id.tv_tempRange);
+                range.setText(wd.getTempLow() + "°C bis " + wd.getTempHigh() + "°C");
+                MyApplication.setClothes(wd.getTempLow(), wd.getTempHigh(), rootView);
+            }
+        }
+
         return rootView;
     }
 }

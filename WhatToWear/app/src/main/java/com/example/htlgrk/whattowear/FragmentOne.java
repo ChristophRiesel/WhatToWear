@@ -30,7 +30,7 @@ public class FragmentOne extends Fragment {
             wd = (WeatherData) getArguments().getSerializable("wd");
             if (wd != null) {
                 TextView akt = (TextView) rootView.findViewById(R.id.aktTemp);
-                akt.setText(wd.currentTemp+"");
+                akt.setText(wd.currentTemp+"°C");
                 TextView datum = (TextView) rootView.findViewById(R.id.datum);
                 SimpleDateFormat df = new SimpleDateFormat("EEEE, dd.MM.yyyy");
                 datum.setText(df.format(wd.date)); //FORMAT

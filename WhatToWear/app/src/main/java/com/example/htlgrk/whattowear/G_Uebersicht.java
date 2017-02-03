@@ -218,10 +218,10 @@ public class G_Uebersicht extends AppCompatActivity implements YahooWheaterCallb
         @Override
         public Fragment getItem(int position) {
             /** Show a Fragment based on the position of the current screen */
-            if(weatherArray[0] != null){
+            if (weatherArray[0] != null) {
                 try {
                     locationManager.removeUpdates(locationListener);
-                }catch (SecurityException sx){
+                } catch (SecurityException sx) {
                     sx.printStackTrace();
                 }
             }
@@ -233,8 +233,15 @@ public class G_Uebersicht extends AppCompatActivity implements YahooWheaterCallb
                 fragment.setArguments(args);
 
                 return fragment;
-            } else
-                return new FragmentTwo();
+            } else {
+                Bundle args = new Bundle();
+                //WeatherData wd = new WeatherData(10, 15, 5, "cloudy", 30, new Date(), "c");
+                args.putSerializable("wd", weatherArray[position]);
+                FragmentTwo fragment = new FragmentTwo();
+                fragment.setArguments(args);
+
+                return fragment;
+            }
         }
 
         @Override

@@ -12,40 +12,57 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
+
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
 
+            <ImageView
+                android:layout_width="16dp"
+                android:layout_height="16dp"
+                android:src="@drawable/standort"
+                />
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="4°C - 10°C"
-                android:id="@+id/tv_tempRange"
+                android:text="Grieskirchen"
+                android:id="@+id/location"
                 android:textColor="@color/colorPrimary"
-                android:textSize="35dp" />
+                android:textSize="24dp"/>
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:text="31.01.2017"
+                android:text="Donnerstag, 31.01.2017"
                 android:textColor="@color/colorPrimary"
-                android:textSize="24dp"
-
+                android:textSize="14dp"
+                android:id="@+id/datum"
                 android:gravity="right"/>
 
 
         </LinearLayout>
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="15°C / 20°C"
+            android:id="@+id/tv_tempRange"
+            android:textColor="@color/colorPrimary"
+            android:textSize="30dp" />
+
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Regnerisch"
+            android:text="Bewölkt"
             android:id="@+id/tv_Wetterlage"
             android:textColor="@color/colorPrimary"
-            android:textSize="25dp"
+            android:textSize="24dp"
             />
+
 
 
         <LinearLayout
@@ -59,10 +76,12 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
+
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="150dp"
+                    android:layout_marginTop="130dp"
                     android:text="Wir empfehlen:"
                     android:textColor="@color/colorPrimary"/>
 
@@ -103,9 +122,6 @@
 
             </LinearLayout>
 
-
-
-
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -113,7 +129,7 @@
 
                 <FrameLayout
                     android:layout_width="200dp"
-                    android:layout_height="445dp"
+                    android:layout_height="450dp"
                     android:layout_alignParentBottom="true"
                     android:layout_alignParentEnd="true"
                     android:id="@+id/frameLayout">
@@ -168,7 +184,13 @@
                         android:id="@+id/iv_dickejacke"
                         />
                 </FrameLayout>
+
             </RelativeLayout>
+
         </LinearLayout>
+
+
     </LinearLayout>
+
+
 </LinearLayout>
