@@ -113,7 +113,7 @@ public class MyApplication extends Application {
         }
     }
 
-    public String getDescriptionForCode(int code) {
+    public static String getDescriptionForCode(int code) {
         switch (code) {
             case 0:
                 return "Tornado";
@@ -142,7 +142,7 @@ public class MyApplication extends Application {
             case 12:
                 return "Regen";
             case 13:
-                return "Schneegest&oumlber";
+                return "Schneegestöber";
             case 14:
                 return "Leichter Schneeregen";
             case 15:
@@ -162,29 +162,29 @@ public class MyApplication extends Application {
             case 22:
                 return "rauchig";
             case 23:
-                return "st&uumlrmisch";
+                return "stürmisch";
             case 24:
                 return "windig";
             case 25:
                 return "kalt";
             case 26:
-                return "bew&oumllkt";
+                return "bewölkt";
             case 27:
-                return "Überwiegend bew&oumllkt";
+                return "Überwiegend bewölkt";
             case 28:
-                return "Überwiegend bew&oumllkt";
+                return "Überwiegend bewölkt";
             case 29:
-                return "Teils bew&oumllkt";
+                return "Teils bewölkt";
             case 30:
-                return "Teils bew&oumllkt";
+                return "Teils bewölkt";
             case 31:
                 return "klar";
             case 32:
                 return "sonnig";
             case 33:
-                return "Sch&oumlnwetter";
+                return "Schönwetter";
             case 34:
-                return "Sch&oumlnwetter";
+                return "Schönwetter";
             case 35:
                 return "Regen und Hagel";
             case 36:
@@ -204,7 +204,7 @@ public class MyApplication extends Application {
             case 43:
                 return "Schwerer Schneefall";
             case 44:
-                return "Teils bew&oumllkt";
+                return "Teils bewölkt";
             case 45:
                 return "Gewitterregen";
             case 46:

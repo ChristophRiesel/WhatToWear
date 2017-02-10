@@ -220,7 +220,7 @@ public class G_Uebersicht extends AppCompatActivity implements YahooWheaterCallb
             }
 
 
-            if(position == 2){
+            if(position == 1){
                 Bundle args = new Bundle();
                 args.putSerializable("location", currentCity);
                 args.putSerializable("wd", weatherArray[position]);
@@ -228,7 +228,7 @@ public class G_Uebersicht extends AppCompatActivity implements YahooWheaterCallb
                 fragment.setArguments(args);
 
                 return fragment;
-            }else if( position == 3){
+            }else if( position == 2){
                 Bundle args = new Bundle();
                 args.putSerializable("location", currentCity);
                 args.putSerializable("wd", weatherArray[position]);
@@ -236,7 +236,7 @@ public class G_Uebersicht extends AppCompatActivity implements YahooWheaterCallb
                 fragment.setArguments(args);
 
                 return fragment;
-            }else if(position == 4){
+            }else if(position == 3){
                 Bundle args = new Bundle();
                 args.putSerializable("location", currentCity);
                 args.putSerializable("wd", weatherArray[position]);
@@ -244,7 +244,7 @@ public class G_Uebersicht extends AppCompatActivity implements YahooWheaterCallb
                 fragment.setArguments(args);
 
                 return fragment;
-            }else if(position == 5){
+            }else if(position == 4){
                 Bundle args = new Bundle();
                 args.putSerializable("location", currentCity);
                 args.putSerializable("wd", weatherArray[position]);
@@ -252,7 +252,7 @@ public class G_Uebersicht extends AppCompatActivity implements YahooWheaterCallb
                 fragment.setArguments(args);
 
                 return fragment;
-            }else if(position == 6){
+            }else if(position == 5){
                 Bundle args = new Bundle();
                 args.putSerializable("location", currentCity);
                 args.putSerializable("wd", weatherArray[position]);
@@ -260,7 +260,7 @@ public class G_Uebersicht extends AppCompatActivity implements YahooWheaterCallb
                 fragment.setArguments(args);
 
                 return fragment;
-            }else if(position == 7){
+            }else if(position == 6){
                 Bundle args = new Bundle();
                 args.putSerializable("location", currentCity);
                 args.putSerializable("wd", weatherArray[position]);
@@ -268,7 +268,7 @@ public class G_Uebersicht extends AppCompatActivity implements YahooWheaterCallb
                 fragment.setArguments(args);
 
                 return fragment;
-            }else if(position == 8){
+            }else if(position == 7){
                 Bundle args = new Bundle();
                 args.putSerializable("location", currentCity);
                 args.putSerializable("wd", weatherArray[position]);
@@ -276,7 +276,7 @@ public class G_Uebersicht extends AppCompatActivity implements YahooWheaterCallb
                 fragment.setArguments(args);
 
                 return fragment;
-            }else if(position == 9){
+            }else if(position == 8){
                 Bundle args = new Bundle();
                 args.putSerializable("location", currentCity);
                 args.putSerializable("wd", weatherArray[position]);
@@ -284,7 +284,7 @@ public class G_Uebersicht extends AppCompatActivity implements YahooWheaterCallb
                 fragment.setArguments(args);
 
                 return fragment;
-            }else if(position == 10){
+            }else if(position == 9) {
                 Bundle args = new Bundle();
                 args.putSerializable("location", currentCity);
                 args.putSerializable("wd", weatherArray[position]);
@@ -331,9 +331,7 @@ public class G_Uebersicht extends AppCompatActivity implements YahooWheaterCallb
     }
 
     @Override
-    protected void onDestroy() {
-        this.finish();
+    public void onBackPressed() {
+        finish();
     }
-
-
 }

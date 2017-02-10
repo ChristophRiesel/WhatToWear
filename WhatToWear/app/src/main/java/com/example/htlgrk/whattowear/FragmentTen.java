@@ -32,9 +32,9 @@ public class FragmentTen extends Fragment{
                 SimpleDateFormat df = new SimpleDateFormat("EEEE, dd.MM.yyyy");
                 datum.setText(df.format(wd.date)); //FORMAT
                 TextView desc = (TextView) rootView.findViewById(R.id.tv_Wetterlage);
-                desc.setText(wd.description);
+                desc.setText(MyApplication.getDescriptionForCode(wd.getCode()));
                 TextView range = (TextView) rootView.findViewById(R.id.tv_tempRange);
-                range.setText(wd.getTempLow() + "°C bis " + wd.getTempHigh() + "°C");
+                range.setText(wd.getTempLow() + "°C / " + wd.getTempHigh() + "°C");
                 MyApplication.setClothes(wd.getTempLow(), wd.getTempHigh(), rootView);
             }
         }
