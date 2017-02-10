@@ -74,6 +74,7 @@ public class MyApplication extends Application {
                 break;
             case PULLOVER:
                 //Zeige Bild für Pullover an
+                ivTshirt.setVisibility(View.VISIBLE);
                 ivPullover.setVisibility(View.VISIBLE);
                 tvOberteil.setText("Pullover");
                 break;
