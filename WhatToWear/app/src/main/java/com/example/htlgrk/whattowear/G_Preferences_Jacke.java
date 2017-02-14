@@ -58,9 +58,6 @@ public class G_Preferences_Jacke extends AppCompatActivity {
     }
 
     private void searchFile() {
-
-
-
         SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(this);
         String data = settings.getString("WhatToWear", "");
 
