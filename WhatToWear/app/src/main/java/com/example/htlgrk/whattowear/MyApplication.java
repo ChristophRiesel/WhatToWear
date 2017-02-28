@@ -1,6 +1,11 @@
 package com.example.htlgrk.whattowear;
 
 import android.app.Application;
+import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
+import android.support.v4.app.Fragment;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -8,9 +13,23 @@ import android.widget.TextView;
 /**
  * Created by Christoph on 13.01.2017.
  */
-public class MyApplication extends Application {
+public class MyApplication extends Application{
 
-    public static void setClothes(int low, int high, View mainView) {
+
+    public static void setClothes(int low, int high, View mainView, Fragment fragment) {
+        Preferences pref = null;
+        SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(fragment.getContext());
+        String data = settings.getString("WhatToWear", "");
+
+        if (!data.equals("")) {
+            String[] x = data.split(";");
+            int jacke = Integer.parseInt(x[0]);
+            int hose = Integer.parseInt(x[1]);
+            String geschlecht = x[2];
+            pref = new Preferences(jacke, hose, geschlecht);
+        }
+
+
         int mintemp = low;
         int maxtemp = high;
 
@@ -19,98 +38,101 @@ public class MyApplication extends Application {
         int value = mintemp + val;
 
         int temp = value;
-        int valuejacke = 15;
-        int valuehose = 20;
+        if (pref !=null){
+            int valuejacke = pref.getValueJacke();
+            int valuehose = pref.getValueHose();
 
-        Kleidungstyp hose;
-        Kleidungstyp jacke;
-        Kleidungstyp oberteil;
 
-        ImageView ivMann = (ImageView) mainView.findViewById(R.id.iv_mann);
-        ivMann.setVisibility(View.VISIBLE);
+            Kleidungstyp hose;
+            Kleidungstyp jacke;
+            Kleidungstyp oberteil;
 
-        ImageView ivLangeHose = (ImageView) mainView.findViewById(R.id.iv_langehose);
-        ivLangeHose.setVisibility(View.GONE);
-        ImageView ivkurzeHose = (ImageView) mainView.findViewById(R.id.iv_kurzehose);
-        ivkurzeHose.setVisibility(View.GONE);
-        ImageView ivTshirt = (ImageView) mainView.findViewById(R.id.iv_tshirt);
-        ImageView ivPullover = (ImageView) mainView.findViewById(R.id.iv_pullover);
-        ivPullover.setVisibility(View.GONE);
-        ivTshirt.setVisibility(View.GONE);
-        ImageView ivDuenneJacke = (ImageView) mainView.findViewById(R.id.iv_duennejacke);
-        ivDuenneJacke.setVisibility(View.GONE);
-        ImageView ivDickeJacke = (ImageView) mainView.findViewById(R.id.iv_dickejacke);
-        ivDickeJacke.setVisibility(View.GONE);
+            ImageView ivMann = (ImageView) mainView.findViewById(R.id.iv_mann);
+            ivMann.setVisibility(View.VISIBLE);
 
-        if (temp >= valuehose) {
-            hose = Kleidungstyp.KURZEHOSE;
-        } else {
-            hose = Kleidungstyp.LANGEHOSE;
-        }
+            ImageView ivLangeHose = (ImageView) mainView.findViewById(R.id.iv_langehose);
+            ivLangeHose.setVisibility(View.GONE);
+            ImageView ivkurzeHose = (ImageView) mainView.findViewById(R.id.iv_kurzehose);
+            ivkurzeHose.setVisibility(View.GONE);
+            ImageView ivTshirt = (ImageView) mainView.findViewById(R.id.iv_tshirt);
+            ImageView ivPullover = (ImageView) mainView.findViewById(R.id.iv_pullover);
+            ivPullover.setVisibility(View.GONE);
+            ivTshirt.setVisibility(View.GONE);
+            ImageView ivDuenneJacke = (ImageView) mainView.findViewById(R.id.iv_duennejacke);
+            ivDuenneJacke.setVisibility(View.GONE);
+            ImageView ivDickeJacke = (ImageView) mainView.findViewById(R.id.iv_dickejacke);
+            ivDickeJacke.setVisibility(View.GONE);
 
-        if (temp <= valuejacke) {
-            oberteil = Kleidungstyp.TSHIRT;
-            jacke = Kleidungstyp.DUENNEJACKE;
+            if (temp >= valuehose) {
+                hose = Kleidungstyp.KURZEHOSE;
+            } else {
+                hose = Kleidungstyp.LANGEHOSE;
+            }
 
-            if (temp <= valuejacke - 4) {
-                oberteil = Kleidungstyp.PULLOVER;
+            if (temp <= valuejacke) {
+                oberteil = Kleidungstyp.TSHIRT;
                 jacke = Kleidungstyp.DUENNEJACKE;
 
-                if (temp <= valuejacke - 8) {
-                    jacke = Kleidungstyp.DICKEJACKE;
+                if (temp <= valuejacke - 4) {
+                    oberteil = Kleidungstyp.PULLOVER;
+                    jacke = Kleidungstyp.DUENNEJACKE;
+
+                    if (temp <= valuejacke - 8) {
+                        jacke = Kleidungstyp.DICKEJACKE;
+                    }
                 }
+            } else {
+                jacke = Kleidungstyp.KEINEJACKE;
+                oberteil = Kleidungstyp.TSHIRT;
             }
-        } else {
-            jacke = Kleidungstyp.KEINEJACKE;
-            oberteil = Kleidungstyp.TSHIRT;
-        }
 
-        TextView tvOberteil = (TextView) mainView.findViewById(R.id.tvOberteil);
-        switch (oberteil) {
-            case TSHIRT:
-                //Zeige Bild für T-Shirt an
-                ivTshirt.setVisibility(View.VISIBLE);
-                tvOberteil.setText("T-Shirt");
-                break;
-            case PULLOVER:
-                //Zeige Bild für Pullover an
-                ivTshirt.setVisibility(View.VISIBLE);
-                ivPullover.setVisibility(View.VISIBLE);
-                tvOberteil.setText("Pullover");
-                break;
-        }
+            TextView tvOberteil = (TextView) mainView.findViewById(R.id.tvOberteil);
+            switch (oberteil) {
+                case TSHIRT:
+                    //Zeige Bild für T-Shirt an
+                    ivTshirt.setVisibility(View.VISIBLE);
+                    tvOberteil.setText("T-Shirt");
+                    break;
+                case PULLOVER:
+                    //Zeige Bild für Pullover an
+                    ivTshirt.setVisibility(View.VISIBLE);
+                    ivPullover.setVisibility(View.VISIBLE);
+                    tvOberteil.setText("Pullover");
+                    break;
+            }
 
-        TextView tvJacke = (TextView) mainView.findViewById(R.id.tvJacke);
-        switch (jacke) {
-            case DICKEJACKE:
-                //Zeige Bild für dicke Jacke an
-                ivDickeJacke.setVisibility(View.VISIBLE);
-                tvJacke.setText("Dicke Jacke");
-                break;
-            case DUENNEJACKE:
-                //Zeige Bild für dünne Jacke an
-                ivDuenneJacke.setVisibility(View.VISIBLE);
-                tvJacke.setText("Dünne Jacke");
-                break;
-            case KEINEJACKE:
-                //Zeige Bild für keine Jacke an
-                tvJacke.setText("Keine Jacke");
-                break;
-        }
+            TextView tvJacke = (TextView) mainView.findViewById(R.id.tvJacke);
+            switch (jacke) {
+                case DICKEJACKE:
+                    //Zeige Bild für dicke Jacke an
+                    ivDickeJacke.setVisibility(View.VISIBLE);
+                    tvJacke.setText("Dicke Jacke");
+                    break;
+                case DUENNEJACKE:
+                    //Zeige Bild für dünne Jacke an
+                    ivDuenneJacke.setVisibility(View.VISIBLE);
+                    tvJacke.setText("Dünne Jacke");
+                    break;
+                case KEINEJACKE:
+                    //Zeige Bild für keine Jacke an
+                    tvJacke.setText("Keine Jacke");
+                    break;
+            }
 
-        TextView tvHose = (TextView) mainView.findViewById(R.id.tvHose);
-        switch (hose) {
-            case LANGEHOSE:
-                //Zeige Bild für lange Hose an
-                ivLangeHose.setVisibility(View.VISIBLE);
-                tvHose.setText("Lange Hose");
-                break;
-            case KURZEHOSE:
-                //Zeige Bild für kurze Hose an
-                ivkurzeHose.setVisibility(View.VISIBLE);
-                tvHose.setText("Kurze Hose");
-                break;
+            TextView tvHose = (TextView) mainView.findViewById(R.id.tvHose);
+            switch (hose) {
+                case LANGEHOSE:
+                    //Zeige Bild für lange Hose an
+                    ivLangeHose.setVisibility(View.VISIBLE);
+                    tvHose.setText("Lange Hose");
+                    break;
+                case KURZEHOSE:
+                    //Zeige Bild für kurze Hose an
+                    ivkurzeHose.setVisibility(View.VISIBLE);
+                    tvHose.setText("Kurze Hose");
+                    break;
 
+            }
         }
     }
 
@@ -217,4 +239,8 @@ public class MyApplication extends Application {
         }
         return "";
     }
+
+
 }
+
+

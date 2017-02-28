@@ -40,7 +40,7 @@ public class FragmentSix extends Fragment {
                 desc.setText(MyApplication.getDescriptionForCode(wd.getCode()));
                 TextView range = (TextView) rootView.findViewById(R.id.tv_tempRange);
                 range.setText(wd.getTempLow() + "°C / " + wd.getTempHigh() + "°C");
-                MyApplication.setClothes(wd.getTempLow(), wd.getTempHigh(), rootView);
+                MyApplication.setClothes(wd.getTempLow(), wd.getTempHigh(), rootView, this);
             }
         }
 
