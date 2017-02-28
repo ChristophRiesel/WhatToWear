@@ -11,6 +11,9 @@ import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
@@ -18,12 +21,10 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
-
 
 import com.example.htlgrk.whattowear.service.YahooWeatherService;
 import com.example.htlgrk.whattowear.service.YahooWheaterCallback;
@@ -53,12 +54,32 @@ public class G_Uebersicht extends AppCompatActivity implements YahooWheaterCallb
     String currentCity;
 
 
+
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.loadscreen);
 
-        ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
+        //CHECK IF CONNECTED
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                while (!isConnectedToInternet(G_Uebersicht.this)) {
+                    try {
+                        Toast.makeText(G_Uebersicht.this, "Bitte verbinden Sie sich mit dem Internet!", Toast.LENGTH_LONG).show();
+                        Thread.sleep(5000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+                //call onrequestpermissionchangeevent
+                ActivityCompat.requestPermissions(G_Uebersicht.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
+            }
+        });
+
+
 
         Intent intent = getIntent();
         Bundle params = intent.getExtras();
@@ -69,7 +90,17 @@ public class G_Uebersicht extends AppCompatActivity implements YahooWheaterCallb
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+    }
 
+    public boolean isConnectedToInternet(Context context) {
+        ConnectivityManager connectivityManager = (ConnectivityManager)
+                context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = null;
+        if (connectivityManager != null) {
+            networkInfo = connectivityManager.getActiveNetworkInfo();
+        }
+
+        return networkInfo != null && networkInfo.getState() == NetworkInfo.State.CONNECTED;
     }
 
 
@@ -133,7 +164,6 @@ public class G_Uebersicht extends AppCompatActivity implements YahooWheaterCallb
                         public void onProviderDisabled(String provider) {
                         }
                     };
-
 
 
                     requestGPSLocation();
@@ -238,7 +268,7 @@ public class G_Uebersicht extends AppCompatActivity implements YahooWheaterCallb
             }
 
 
-            if(position == 1){
+            if (position == 1) {
                 Bundle args = new Bundle();
                 args.putSerializable("location", currentCity);
                 args.putSerializable("wd", weatherArray[position]);
@@ -246,7 +276,7 @@ public class G_Uebersicht extends AppCompatActivity implements YahooWheaterCallb
                 fragment.setArguments(args);
 
                 return fragment;
-            }else if( position == 2){
+            } else if (position == 2) {
                 Bundle args = new Bundle();
                 args.putSerializable("location", currentCity);
                 args.putSerializable("wd", weatherArray[position]);
@@ -254,7 +284,7 @@ public class G_Uebersicht extends AppCompatActivity implements YahooWheaterCallb
                 fragment.setArguments(args);
 
                 return fragment;
-            }else if(position == 3){
+            } else if (position == 3) {
                 Bundle args = new Bundle();
                 args.putSerializable("location", currentCity);
                 args.putSerializable("wd", weatherArray[position]);
@@ -262,7 +292,7 @@ public class G_Uebersicht extends AppCompatActivity implements YahooWheaterCallb
                 fragment.setArguments(args);
 
                 return fragment;
-            }else if(position == 4){
+            } else if (position == 4) {
                 Bundle args = new Bundle();
                 args.putSerializable("location", currentCity);
                 args.putSerializable("wd", weatherArray[position]);
@@ -270,7 +300,7 @@ public class G_Uebersicht extends AppCompatActivity implements YahooWheaterCallb
                 fragment.setArguments(args);
 
                 return fragment;
-            }else if(position == 5){
+            } else if (position == 5) {
                 Bundle args = new Bundle();
                 args.putSerializable("location", currentCity);
                 args.putSerializable("wd", weatherArray[position]);
@@ -278,7 +308,7 @@ public class G_Uebersicht extends AppCompatActivity implements YahooWheaterCallb
                 fragment.setArguments(args);
 
                 return fragment;
-            }else if(position == 6){
+            } else if (position == 6) {
                 Bundle args = new Bundle();
                 args.putSerializable("location", currentCity);
                 args.putSerializable("wd", weatherArray[position]);
@@ -286,7 +316,7 @@ public class G_Uebersicht extends AppCompatActivity implements YahooWheaterCallb
                 fragment.setArguments(args);
 
                 return fragment;
-            }else if(position == 7){
+            } else if (position == 7) {
                 Bundle args = new Bundle();
                 args.putSerializable("location", currentCity);
                 args.putSerializable("wd", weatherArray[position]);
@@ -294,7 +324,7 @@ public class G_Uebersicht extends AppCompatActivity implements YahooWheaterCallb
                 fragment.setArguments(args);
 
                 return fragment;
-            }else if(position == 8){
+            } else if (position == 8) {
                 Bundle args = new Bundle();
                 args.putSerializable("location", currentCity);
                 args.putSerializable("wd", weatherArray[position]);
@@ -302,7 +332,7 @@ public class G_Uebersicht extends AppCompatActivity implements YahooWheaterCallb
                 fragment.setArguments(args);
 
                 return fragment;
-            }else if(position == 9) {
+            } else if (position == 9) {
                 Bundle args = new Bundle();
                 args.putSerializable("location", currentCity);
                 args.putSerializable("wd", weatherArray[position]);
@@ -310,7 +340,7 @@ public class G_Uebersicht extends AppCompatActivity implements YahooWheaterCallb
                 fragment.setArguments(args);
 
                 return fragment;
-            }else{
+            } else {
                 Bundle args = new Bundle();
                 //WeatherData wd = new WeatherData(10, 15, 5, "cloudy", 30, new Date(), "c");
                 args.putSerializable("location", currentCity);
