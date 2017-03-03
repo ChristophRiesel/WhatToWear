@@ -53,10 +53,6 @@ public class G_Uebersicht extends AppCompatActivity implements YahooWheaterCallb
 
     String currentCity;
 
-
-
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -111,65 +107,81 @@ public class G_Uebersicht extends AppCompatActivity implements YahooWheaterCallb
                 if (grantResults.length > 0
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
 
-                    locationManager = (LocationManager) G_Uebersicht.this.getSystemService(Context.LOCATION_SERVICE);
-                    locationListener = new LocationListener() {
-                        public void onLocationChanged(Location location) {
-                            try {
-                                if (location != null) {
-                                    mLastLocation = location;
-                                    List<Address> addresses;
-                                    Geocoder geocoder = new Geocoder(getApplicationContext(), Locale.getDefault());
+                    SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(this);
+                    final Boolean currentlocation = settings.getBoolean("currentlocation", true);
 
-                                    addresses = geocoder.getFromLocation(location.getLatitude(), location.getLongitude(), 1); // Here 1 represent max location result to returned, by documents it recommended 1 to 5
+                        locationManager = (LocationManager) G_Uebersicht.this.getSystemService(Context.LOCATION_SERVICE);
+                        locationListener = new LocationListener() {
+                            public void onLocationChanged(Location location) {
+                                try {
+                                    if (location != null) {
 
-                                    String address = addresses.get(0).getAddressLine(0); // If any additional address line present than only, check with max available address lines by getMaxAddressLineIndex()
-                                    String city = addresses.get(0).getLocality();
-                                    currentCity = city;
-                                    String state = addresses.get(0).getAdminArea();
-                                    String country = addresses.get(0).getCountryName();
-                                    String postalCode = addresses.get(0).getPostalCode();
-                                    String knownName = addresses.get(0).getFeatureName(); // Only if available else return NULL
+                                        if(currentlocation) {
+                                            mLastLocation = location;
+                                            List<Address> addresses;
+                                            Geocoder geocoder = new Geocoder(getApplicationContext(), Locale.getDefault());
 
-                                    //ö ä ü - behandeln
-                                    country = country.replace("ä", "ae");
-                                    country = country.replace("ö", "oe");
-                                    country = country.replace("ü", "ue");
-                                    country = country.replace("Ä", "Ae");
-                                    country = country.replace("Ö", "Oe");
-                                    country = country.replace("Ü", "Ue");
+                                            addresses = geocoder.getFromLocation(location.getLatitude(), location.getLongitude(), 1); // Here 1 represent max location result to returned, by documents it recommended 1 to 5
+
+                                            String address = addresses.get(0).getAddressLine(0); // If any additional address line present than only, check with max available address lines by getMaxAddressLineIndex()
+                                            String city = addresses.get(0).getLocality();
+                                            currentCity = city;
+                                            String state = addresses.get(0).getAdminArea();
+                                            String country = addresses.get(0).getCountryName();
+                                            String postalCode = addresses.get(0).getPostalCode();
+                                            String knownName = addresses.get(0).getFeatureName(); // Only if available else return NULL
+
+                                            //ö ä ü - behandeln
+                                            country = country.replace("ä", "ae");
+                                            country = country.replace("ö", "oe");
+                                            country = country.replace("ü", "ue");
+                                            country = country.replace("Ä", "Ae");
+                                            country = country.replace("Ö", "Oe");
+                                            country = country.replace("Ü", "Ue");
 
 
-                                    String locationstring = city + "," + postalCode + "," + country;
+                                            String locationstring = city + "," + postalCode + "," + country;
 
 
-                                    service = new YahooWeatherService(G_Uebersicht.this);
-                                    //dialog = new ProgressDialog(G_Uebersicht.this);
-                                    //dialog.setMessage("loading");
-                                    //dialog.show();
+                                            service = new YahooWeatherService(G_Uebersicht.this);
+                                            //dialog = new ProgressDialog(G_Uebersicht.this);
+                                            //dialog.setMessage("loading");
+                                            //dialog.show();
 
-                                    service.refreshWeather(locationstring);
+                                            service.refreshWeather(locationstring);
+                                        }else if(!currentlocation){
+                                            SharedPreferences settings1 = PreferenceManager.getDefaultSharedPreferences(G_Uebersicht.this);
+                                            String customlocation = settings1.getString("location", "");
+                                            currentCity = customlocation;
+                                            if(!customlocation.equals("")){
+                                                service = new YahooWeatherService(G_Uebersicht.this);
+                                                service.refreshWeather(customlocation);
+
+                                            }
+                                        }
+                                    }
+                                } catch (Exception e) {
+                                    e.printStackTrace();
                                 }
-                            } catch (Exception e) {
-                                e.printStackTrace();
                             }
+
+
+                            public void onStatusChanged(String provider, int status, Bundle extras) {
+                            }
+
+                            public void onProviderEnabled(String provider) {
+                            }
+
+                            public void onProviderDisabled(String provider) {
+                            }
+                        };
+
+
+                        requestGPSLocation();
+                        if (mLastLocation == null) {
+                            requestNetworkLocation();
                         }
 
-
-                        public void onStatusChanged(String provider, int status, Bundle extras) {
-                        }
-
-                        public void onProviderEnabled(String provider) {
-                        }
-
-                        public void onProviderDisabled(String provider) {
-                        }
-                    };
-
-
-                    requestGPSLocation();
-                    if (mLastLocation == null) {
-                        requestNetworkLocation();
-                    }
 
                 } else {
                     Toast.makeText(this, "Ohne Zugriff auf die Position funktioniert die App nicht!", Toast.LENGTH_LONG).show();
@@ -241,8 +253,38 @@ public class G_Uebersicht extends AppCompatActivity implements YahooWheaterCallb
 
     @Override
     public void serviceFailure(Exception ex) {
-        //dialog.dismiss();
-        Toast.makeText(this, ex.getMessage(), Toast.LENGTH_SHORT).show();
+        SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(this);
+        Boolean currentlocation = settings.getBoolean("currentlocation", true);
+
+        if(!currentlocation){
+
+            //SEARCH SAVED LOCATION
+            settings = PreferenceManager.getDefaultSharedPreferences(G_Uebersicht.this);
+            String loc = settings.getString("location", "");
+            if(!loc.equals("")){
+                Toast.makeText(this, "Standort ungültig für "+loc , Toast.LENGTH_LONG).show();
+            }else{
+                Toast.makeText(this, "Standort ungültig" , Toast.LENGTH_LONG).show();
+            }
+            //CLEAR SAVED LOCATION
+            settings = PreferenceManager.getDefaultSharedPreferences(G_Uebersicht.this);
+            settings.edit().remove("location").commit();
+            //CHANGE SEARCH TYPE TO CURRENT-LOCATION
+            settings = PreferenceManager.getDefaultSharedPreferences(G_Uebersicht.this);
+            SharedPreferences.Editor editor = settings.edit();
+            editor.putBoolean("currentlocation", true);
+            editor.commit();
+
+            finish();
+            startActivity(getIntent());
+
+        }else{
+            Toast.makeText(this, "Aktueller Standort ungültig" , Toast.LENGTH_LONG).show();
+        }
+
+
+
+
     }
 
 
