@@ -1,6 +1,7 @@
 package com.example.htlgrk.whattowear;
 
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
@@ -9,11 +10,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.spyhunter99.supertooltips.ToolTip;
+import com.spyhunter99.supertooltips.ToolTipManager;
+
 import java.text.SimpleDateFormat;
 
 public class FragmentTwo extends Fragment {
     WeatherData wd;
     String currentCity;
+    public ToolTipManager tooltips;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -37,6 +42,22 @@ public class FragmentTwo extends Fragment {
                 MyApplication.setClothes(wd.getTempLow(), wd.getTempHigh(), rootView, this);
             }
         }
+
+        tooltips = new ToolTipManager(getActivity());
+
+        TextView tv = (TextView) rootView.findViewById(R.id.location);
+        tv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ToolTip toolTip = new ToolTip()
+                        .withText(currentCity)
+                        .withTextColor(Color.WHITE)
+                        .withColor(Color.rgb(64, 81, 181)) //or whatever you want
+                        .withAnimationType(ToolTip.AnimationType.FROM_MASTER_VIEW)
+                        .withShadow();
+                tooltips.showToolTip(toolTip, v);
+            }
+        });
 
         return rootView;
     }

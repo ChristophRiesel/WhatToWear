@@ -24,12 +24,14 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.widget.Toast;
 
 import com.example.htlgrk.whattowear.service.YahooWeatherService;
 import com.example.htlgrk.whattowear.service.YahooWheaterCallback;
 import com.example.htlgrk.whattowear.wheather_data.Channel;
 import com.example.htlgrk.whattowear.wheather_data.Item;
+import com.spyhunter99.supertooltips.ToolTipManager;
 
 import java.util.List;
 import java.util.Locale;
@@ -52,6 +54,7 @@ public class G_Uebersicht extends AppCompatActivity implements YahooWheaterCallb
     LocationListener locationListener;
 
     String currentCity;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -393,6 +396,8 @@ public class G_Uebersicht extends AppCompatActivity implements YahooWheaterCallb
                 return fragment;
 
             }
+
+
         }
 
         @Override
@@ -420,6 +425,7 @@ public class G_Uebersicht extends AppCompatActivity implements YahooWheaterCallb
             ex.printStackTrace();
         }
     }
+
 
 
 

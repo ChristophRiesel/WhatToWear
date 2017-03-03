@@ -155,4 +155,12 @@ public class G_Settings extends AppCompatActivity {
         }
 
     }
+
+
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent(G_Settings.this, G_Uebersicht.class);
+        intent.putExtra("preferences", pref);
+        startActivity(intent);
+    }
 }
