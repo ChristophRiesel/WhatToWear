@@ -13,7 +13,7 @@ public class G_Settings extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.g__settings_layout);
+        setContentView(R.layout.g_settings_layout);
 
 
         Intent intent = getIntent();

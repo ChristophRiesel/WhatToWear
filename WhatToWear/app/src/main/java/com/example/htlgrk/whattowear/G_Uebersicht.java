@@ -24,6 +24,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Button;
 import android.widget.Toast;
 
 import com.example.htlgrk.whattowear.service.YahooWeatherService;
@@ -53,6 +54,8 @@ public class G_Uebersicht extends AppCompatActivity implements YahooWheaterCallb
 
     String currentCity;
 
+    boolean dataAlreadyExisted = false;
+
 
 
 
@@ -62,24 +65,10 @@ public class G_Uebersicht extends AppCompatActivity implements YahooWheaterCallb
         super.onCreate(savedInstanceState);
         setContentView(R.layout.loadscreen);
 
-        //CHECK IF CONNECTED
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                while (!isConnectedToInternet(G_Uebersicht.this)) {
-                    try {
-                        Toast.makeText(G_Uebersicht.this, "Bitte verbinden Sie sich mit dem Internet!", Toast.LENGTH_LONG).show();
-                        Thread.sleep(5000);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                }
-                //call onrequestpermissionchangeevent
-                ActivityCompat.requestPermissions(G_Uebersicht.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
-            }
-        });
-
-
+        if(!checkForExistingWeatherData(G_Uebersicht.this)) {
+            //call onrequestpermissionchangeevent
+            ActivityCompat.requestPermissions(G_Uebersicht.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
+        }
 
         Intent intent = getIntent();
         Bundle params = intent.getExtras();
@@ -89,7 +78,6 @@ public class G_Uebersicht extends AppCompatActivity implements YahooWheaterCallb
         writeToFile(pref);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
     }
 
     public boolean isConnectedToInternet(Context context) {
@@ -193,7 +181,11 @@ public class G_Uebersicht extends AppCompatActivity implements YahooWheaterCallb
                 startActivity(intent);
                 break;
             case R.id.menu10days:
-                Toast.makeText(G_Uebersicht.this, "10Tage-Übersicht", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(G_Uebersicht.this, "10Tage-Übersicht", Toast.LENGTH_SHORT).show();
+                Intent i = new Intent(G_Uebersicht.this, ZehnTagesVorschau.class);
+                i.putExtra("weatherArray", weatherArray);
+                i.putExtra("currentCity", currentCity);
+                startActivity(i);
                 break;
         }
         return super.onOptionsItemSelected(item);
@@ -259,7 +251,7 @@ public class G_Uebersicht extends AppCompatActivity implements YahooWheaterCallb
         @Override
         public Fragment getItem(int position) {
             /** Show a Fragment based on the position of the current screen */
-            if (weatherArray[0] != null) {
+            if (weatherArray[0] != null && dataAlreadyExisted == false) {
                 try {
                     locationManager.removeUpdates(locationListener);
                 } catch (SecurityException sx) {
@@ -358,6 +350,29 @@ public class G_Uebersicht extends AppCompatActivity implements YahooWheaterCallb
             // Show 10 total pages.
             return 10;
         }
+    }
+
+    private boolean checkForExistingWeatherData(G_Uebersicht main){
+        try {
+            Bundle b = main.getIntent().getExtras();
+                currentCity =  b.getString("currentCity");
+                weatherArray = (WeatherData[]) b.get("weatherArray");
+            if(weatherArray != null && currentCity != null) {
+                setContentView(R.layout.g_uebersicht_screenslide);
+                toolbar = (Toolbar) findViewById(R.id.toolbar);
+                setSupportActionBar(toolbar);
+
+                //activate Viewapger
+                mViewPager = (ViewPager) findViewById(R.id.pager);
+                mViewPager.setAdapter(new PagerAdapter(
+                        this.getSupportFragmentManager(), this));
+                dataAlreadyExisted = true;
+                return true;
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return false;
     }
 
 

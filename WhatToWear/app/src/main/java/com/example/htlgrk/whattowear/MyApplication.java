@@ -1,8 +1,6 @@
 package com.example.htlgrk.whattowear;
 
 import android.app.Application;
-import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
@@ -10,10 +8,12 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.text.SimpleDateFormat;
+
 /**
  * Created by Christoph on 13.01.2017.
  */
-public class MyApplication extends Application{
+public class MyApplication extends Application {
 
 
     public static void setClothes(int low, int high, View mainView, Fragment fragment) {
@@ -38,18 +38,22 @@ public class MyApplication extends Application{
         int value = mintemp + val;
 
         int temp = value;
-        if (pref !=null){
+        if (pref != null) {
             int valuejacke = pref.getValueJacke();
             int valuehose = pref.getValueHose();
 
 
-            Kleidungstyp hose;
-            Kleidungstyp jacke;
-            Kleidungstyp oberteil;
+            Kleidungstyp hose = Kleidungstyp.LANGEHOSE;
+            Kleidungstyp jacke = Kleidungstyp.DICKEJACKE;
+            Kleidungstyp oberteil = Kleidungstyp.PULLOVER;
 
             ImageView ivMann = (ImageView) mainView.findViewById(R.id.iv_mann);
             ivMann.setVisibility(View.VISIBLE);
 
+
+            TextView tvJacke = (TextView) mainView.findViewById(R.id.tvJacke);
+            TextView tvOberteil = (TextView) mainView.findViewById(R.id.tvOberteil);
+            TextView tvHose = (TextView) mainView.findViewById(R.id.tvHose);
             ImageView ivLangeHose = (ImageView) mainView.findViewById(R.id.iv_langehose);
             ivLangeHose.setVisibility(View.GONE);
             ImageView ivkurzeHose = (ImageView) mainView.findViewById(R.id.iv_kurzehose);
@@ -63,63 +67,32 @@ public class MyApplication extends Application{
             ImageView ivDickeJacke = (ImageView) mainView.findViewById(R.id.iv_dickejacke);
             ivDickeJacke.setVisibility(View.GONE);
 
+            //HOSE
             if (temp >= valuehose) {
                 hose = Kleidungstyp.KURZEHOSE;
             } else {
                 hose = Kleidungstyp.LANGEHOSE;
             }
 
-            if (temp <= valuejacke) {
+            //JACKE
+            if (temp >= valuejacke + 6) {
+                oberteil= Kleidungstyp.TSHIRT;
+                jacke = Kleidungstyp.KEINEJACKE;
+            } else if (temp > valuejacke) {
+                oberteil = Kleidungstyp.TSHIRT;
+                jacke = Kleidungstyp.PULLOVER;
+            } else if (temp <= valuejacke) {
                 oberteil = Kleidungstyp.TSHIRT;
                 jacke = Kleidungstyp.DUENNEJACKE;
-
-                if (temp <= valuejacke - 4) {
-                    oberteil = Kleidungstyp.PULLOVER;
-                    jacke = Kleidungstyp.DUENNEJACKE;
-
-                    if (temp <= valuejacke - 8) {
-                        jacke = Kleidungstyp.DICKEJACKE;
-                    }
-                }
-            } else {
-                jacke = Kleidungstyp.KEINEJACKE;
-                oberteil = Kleidungstyp.TSHIRT;
+            } else if (temp <= valuejacke - 4) {
+                oberteil = Kleidungstyp.PULLOVER;
+                jacke = Kleidungstyp.DUENNEJACKE;
+            } else if (temp <= valuejacke - 8) {
+                oberteil= Kleidungstyp.PULLOVER;
+                jacke = Kleidungstyp.DICKEJACKE;
             }
 
-            TextView tvOberteil = (TextView) mainView.findViewById(R.id.tvOberteil);
-            switch (oberteil) {
-                case TSHIRT:
-                    //Zeige Bild für T-Shirt an
-                    ivTshirt.setVisibility(View.VISIBLE);
-                    tvOberteil.setText("T-Shirt");
-                    break;
-                case PULLOVER:
-                    //Zeige Bild für Pullover an
-                    ivTshirt.setVisibility(View.VISIBLE);
-                    ivPullover.setVisibility(View.VISIBLE);
-                    tvOberteil.setText("Pullover");
-                    break;
-            }
-
-            TextView tvJacke = (TextView) mainView.findViewById(R.id.tvJacke);
-            switch (jacke) {
-                case DICKEJACKE:
-                    //Zeige Bild für dicke Jacke an
-                    ivDickeJacke.setVisibility(View.VISIBLE);
-                    tvJacke.setText("Dicke Jacke");
-                    break;
-                case DUENNEJACKE:
-                    //Zeige Bild für dünne Jacke an
-                    ivDuenneJacke.setVisibility(View.VISIBLE);
-                    tvJacke.setText("Dünne Jacke");
-                    break;
-                case KEINEJACKE:
-                    //Zeige Bild für keine Jacke an
-                    tvJacke.setText("Keine Jacke");
-                    break;
-            }
-
-            TextView tvHose = (TextView) mainView.findViewById(R.id.tvHose);
+            //HOSE
             switch (hose) {
                 case LANGEHOSE:
                     //Zeige Bild für lange Hose an
@@ -133,8 +106,339 @@ public class MyApplication extends Application{
                     break;
 
             }
+
+            //OBERTEIL UND JACKE
+            if(oberteil == Kleidungstyp.TSHIRT && jacke == Kleidungstyp.KEINEJACKE){
+                ivTshirt.setVisibility(View.VISIBLE);
+                tvOberteil.setText("T-Shirt");
+                tvJacke.setText("Keine Jacke");
+            }else if(oberteil == Kleidungstyp.TSHIRT && jacke == Kleidungstyp.PULLOVER){
+                ivTshirt.setVisibility(View.VISIBLE);
+                ivPullover.setVisibility(View.VISIBLE);
+                tvOberteil.setText("T-Shirt");
+                tvJacke.setText("Pullover");
+            }else if(oberteil == Kleidungstyp.TSHIRT && jacke == Kleidungstyp.DUENNEJACKE){
+                ivTshirt.setVisibility(View.VISIBLE);
+                ivDuenneJacke.setVisibility(View.VISIBLE);
+                tvOberteil.setText("T-Shirt");
+                tvJacke.setText("dünne Jacke");
+            }else if(oberteil == Kleidungstyp.PULLOVER && jacke == Kleidungstyp.DUENNEJACKE){
+                ivTshirt.setVisibility(View.VISIBLE);
+                ivTshirt.setVisibility(View.VISIBLE);
+                ivDuenneJacke.setVisibility(View.VISIBLE);
+                tvOberteil.setText("Pullover");
+                tvJacke.setText("dünne Jacke");
+            }else if(oberteil == Kleidungstyp.PULLOVER && jacke == Kleidungstyp.DICKEJACKE){
+                ivTshirt.setVisibility(View.VISIBLE);
+                ivPullover.setVisibility(View.VISIBLE);
+                ivDickeJacke.setVisibility(View.VISIBLE);
+                tvOberteil.setText("T-Shirt & Pullover");
+                tvJacke.setText("dicke Jacke");
+            }
         }
     }
+
+
+    public static void set10TagesWetterVorschau(ZehnTagesVorschau main, WeatherData[] weatherArray) {
+
+        SimpleDateFormat df = new SimpleDateFormat("EEEE, dd.MM.yyyy");
+
+        TextView tvJacke;
+        TextView tvOberteil;
+        TextView tvHose;
+        ImageView ivMann;
+        ImageView ivLangeHose;
+        ImageView ivkurzeHose;
+        ImageView ivTshirt;
+        ImageView ivPullover;
+        ImageView ivDuenneJacke;
+        ImageView ivDickeJacke;
+
+        TextView tvDatum;
+
+        //FELD 1
+        tvDatum = (TextView) main.findViewById(R.id.datum1);
+        WeatherData wd1 = weatherArray[0];
+        tvDatum.setText(df.format(wd1.date)); //FORMAT
+        tvJacke = (TextView) main.findViewById(R.id.tvJacke1);
+        tvOberteil = (TextView) main.findViewById(R.id.tvOberteil1);
+        tvHose = (TextView) main.findViewById(R.id.tvHose1);
+        ivMann = (ImageView) main.findViewById(R.id.iv_mann1);
+        ivLangeHose = (ImageView) main.findViewById(R.id.iv_langehose1);
+        ivkurzeHose = (ImageView) main.findViewById(R.id.iv_kurzehose1);
+        ivTshirt = (ImageView) main.findViewById(R.id.iv_tshirt1);
+        ivPullover = (ImageView) main.findViewById(R.id.iv_pullover1);
+        ivDuenneJacke = (ImageView) main.findViewById(R.id.iv_duennejacke1);
+        ivDickeJacke = (ImageView) main.findViewById(R.id.iv_dickejacke1);
+        setUbersichtClothes(wd1.tempLow, wd1.tempHigh, main, tvJacke, tvOberteil, tvHose, ivMann, ivLangeHose,
+                ivkurzeHose, ivTshirt, ivPullover, ivDuenneJacke, ivDickeJacke);
+
+        //FELD 2
+        tvDatum = (TextView) main.findViewById(R.id.datum2);
+        WeatherData wd2 = weatherArray[1];
+        tvDatum.setText(df.format(wd2.date)); //FORMAT
+        tvJacke = (TextView) main.findViewById(R.id.tvJacke2);
+        tvOberteil = (TextView) main.findViewById(R.id.tvOberteil2);
+        tvHose = (TextView) main.findViewById(R.id.tvHose2);
+        ivMann = (ImageView) main.findViewById(R.id.iv_mann2);
+        ivLangeHose = (ImageView) main.findViewById(R.id.iv_langehose2);
+        ivkurzeHose = (ImageView) main.findViewById(R.id.iv_kurzehose2);
+        ivTshirt = (ImageView) main.findViewById(R.id.iv_tshirt2);
+        ivPullover = (ImageView) main.findViewById(R.id.iv_pullover2);
+        ivDuenneJacke = (ImageView) main.findViewById(R.id.iv_duennejacke2);
+        ivDickeJacke = (ImageView) main.findViewById(R.id.iv_dickejacke2);
+        setUbersichtClothes(wd2.tempLow, wd2.tempHigh, main, tvJacke, tvOberteil, tvHose, ivMann, ivLangeHose,
+                ivkurzeHose, ivTshirt, ivPullover, ivDuenneJacke, ivDickeJacke);
+
+        //FELD 3
+        tvDatum = (TextView) main.findViewById(R.id.datum3);
+        WeatherData wd3 = weatherArray[2];
+        tvDatum.setText(df.format(wd3.date)); //FORMAT
+        tvJacke = (TextView) main.findViewById(R.id.tvJacke3);
+        tvOberteil = (TextView) main.findViewById(R.id.tvOberteil3);
+        tvHose = (TextView) main.findViewById(R.id.tvHose3);
+        ivMann = (ImageView) main.findViewById(R.id.iv_mann2);
+        ivLangeHose = (ImageView) main.findViewById(R.id.iv_langehose3);
+        ivkurzeHose = (ImageView) main.findViewById(R.id.iv_kurzehose3);
+        ivTshirt = (ImageView) main.findViewById(R.id.iv_tshirt3);
+        ivPullover = (ImageView) main.findViewById(R.id.iv_pullover3);
+        ivDuenneJacke = (ImageView) main.findViewById(R.id.iv_duennejacke3);
+        ivDickeJacke = (ImageView) main.findViewById(R.id.iv_dickejacke3);
+        setUbersichtClothes(wd3.tempLow, wd3.tempHigh, main, tvJacke, tvOberteil, tvHose, ivMann, ivLangeHose,
+                ivkurzeHose, ivTshirt, ivPullover, ivDuenneJacke, ivDickeJacke);
+
+        //FELD 4
+        tvDatum = (TextView) main.findViewById(R.id.datum4);
+        WeatherData wd4 = weatherArray[3];
+        tvDatum.setText(df.format(wd4.date)); //FORMAT
+        tvJacke = (TextView) main.findViewById(R.id.tvJacke4);
+        tvOberteil = (TextView) main.findViewById(R.id.tvOberteil4);
+        tvHose = (TextView) main.findViewById(R.id.tvHose4);
+        ivMann = (ImageView) main.findViewById(R.id.iv_mann4);
+        ivLangeHose = (ImageView) main.findViewById(R.id.iv_langehose4);
+        ivkurzeHose = (ImageView) main.findViewById(R.id.iv_kurzehose4);
+        ivTshirt = (ImageView) main.findViewById(R.id.iv_tshirt4);
+        ivPullover = (ImageView) main.findViewById(R.id.iv_pullover4);
+        ivDuenneJacke = (ImageView) main.findViewById(R.id.iv_duennejacke4);
+        ivDickeJacke = (ImageView) main.findViewById(R.id.iv_dickejacke4);
+        setUbersichtClothes(wd4.tempLow, wd4.tempHigh, main, tvJacke, tvOberteil, tvHose, ivMann, ivLangeHose,
+                ivkurzeHose, ivTshirt, ivPullover, ivDuenneJacke, ivDickeJacke);
+
+        //FELD 5
+        tvDatum = (TextView) main.findViewById(R.id.datum5);
+        WeatherData wd5 = weatherArray[4];
+        tvDatum.setText(df.format(wd5.date)); //FORMAT
+        tvJacke = (TextView) main.findViewById(R.id.tvJacke5);
+        tvOberteil = (TextView) main.findViewById(R.id.tvOberteil5);
+        tvHose = (TextView) main.findViewById(R.id.tvHose5);
+        ivMann = (ImageView) main.findViewById(R.id.iv_mann5);
+        ivLangeHose = (ImageView) main.findViewById(R.id.iv_langehose5);
+        ivkurzeHose = (ImageView) main.findViewById(R.id.iv_kurzehose5);
+        ivTshirt = (ImageView) main.findViewById(R.id.iv_tshirt5);
+        ivPullover = (ImageView) main.findViewById(R.id.iv_pullover5);
+        ivDuenneJacke = (ImageView) main.findViewById(R.id.iv_duennejacke5);
+        ivDickeJacke = (ImageView) main.findViewById(R.id.iv_dickejacke5);
+        setUbersichtClothes(wd5.tempLow, wd5.tempHigh, main, tvJacke, tvOberteil, tvHose, ivMann, ivLangeHose,
+                ivkurzeHose, ivTshirt, ivPullover, ivDuenneJacke, ivDickeJacke);
+
+        //FELD 6
+        tvDatum = (TextView) main.findViewById(R.id.datum6);
+        WeatherData wd6 = weatherArray[5];
+        tvDatum.setText(df.format(wd6.date)); //FORMAT
+        tvJacke = (TextView) main.findViewById(R.id.tvJacke6);
+        tvOberteil = (TextView) main.findViewById(R.id.tvOberteil6);
+        tvHose = (TextView) main.findViewById(R.id.tvHose6);
+        ivMann = (ImageView) main.findViewById(R.id.iv_mann6);
+        ivLangeHose = (ImageView) main.findViewById(R.id.iv_langehose6);
+        ivkurzeHose = (ImageView) main.findViewById(R.id.iv_kurzehose6);
+        ivTshirt = (ImageView) main.findViewById(R.id.iv_tshirt6);
+        ivPullover = (ImageView) main.findViewById(R.id.iv_pullover6);
+        ivDuenneJacke = (ImageView) main.findViewById(R.id.iv_duennejacke6);
+        ivDickeJacke = (ImageView) main.findViewById(R.id.iv_dickejacke6);
+        setUbersichtClothes(wd6.tempLow, wd6.tempHigh, main, tvJacke, tvOberteil, tvHose, ivMann, ivLangeHose,
+                ivkurzeHose, ivTshirt, ivPullover, ivDuenneJacke, ivDickeJacke);
+
+        //FELD 7
+        tvDatum = (TextView) main.findViewById(R.id.datum7);
+        WeatherData wd7 = weatherArray[6];
+        tvDatum.setText(df.format(wd7.date)); //FORMAT
+        tvJacke = (TextView) main.findViewById(R.id.tvJacke7);
+        tvOberteil = (TextView) main.findViewById(R.id.tvOberteil7);
+        tvHose = (TextView) main.findViewById(R.id.tvHose7);
+        ivMann = (ImageView) main.findViewById(R.id.iv_mann7);
+        ivLangeHose = (ImageView) main.findViewById(R.id.iv_langehose7);
+        ivkurzeHose = (ImageView) main.findViewById(R.id.iv_kurzehose7);
+        ivTshirt = (ImageView) main.findViewById(R.id.iv_tshirt7);
+        ivPullover = (ImageView) main.findViewById(R.id.iv_pullover7);
+        ivDuenneJacke = (ImageView) main.findViewById(R.id.iv_duennejacke7);
+        ivDickeJacke = (ImageView) main.findViewById(R.id.iv_dickejacke7);
+        setUbersichtClothes(wd7.tempLow, wd7.tempHigh, main, tvJacke, tvOberteil, tvHose, ivMann, ivLangeHose,
+                ivkurzeHose, ivTshirt, ivPullover, ivDuenneJacke, ivDickeJacke);
+
+        //FELD 8
+        tvDatum = (TextView) main.findViewById(R.id.datum8);
+        WeatherData wd8 = weatherArray[7];
+        tvDatum.setText(df.format(wd8.date)); //FORMAT
+        tvJacke = (TextView) main.findViewById(R.id.tvJacke8);
+        tvOberteil = (TextView) main.findViewById(R.id.tvOberteil8);
+        tvHose = (TextView) main.findViewById(R.id.tvHose8);
+        ivMann = (ImageView) main.findViewById(R.id.iv_mann8);
+        ivLangeHose = (ImageView) main.findViewById(R.id.iv_langehose8);
+        ivkurzeHose = (ImageView) main.findViewById(R.id.iv_kurzehose8);
+        ivTshirt = (ImageView) main.findViewById(R.id.iv_tshirt8);
+        ivPullover = (ImageView) main.findViewById(R.id.iv_pullover8);
+        ivDuenneJacke = (ImageView) main.findViewById(R.id.iv_duennejacke8);
+        ivDickeJacke = (ImageView) main.findViewById(R.id.iv_dickejacke8);
+        setUbersichtClothes(wd8.tempLow, wd8.tempHigh, main, tvJacke, tvOberteil, tvHose, ivMann, ivLangeHose,
+                ivkurzeHose, ivTshirt, ivPullover, ivDuenneJacke, ivDickeJacke);
+
+        //FELD 9
+        tvDatum = (TextView) main.findViewById(R.id.datum9);
+        WeatherData wd9 = weatherArray[8];
+        tvDatum.setText(df.format(wd9.date)); //FORMAT
+        tvJacke = (TextView) main.findViewById(R.id.tvJacke9);
+        tvOberteil = (TextView) main.findViewById(R.id.tvOberteil9);
+        tvHose = (TextView) main.findViewById(R.id.tvHose9);
+        ivMann = (ImageView) main.findViewById(R.id.iv_mann9);
+        ivLangeHose = (ImageView) main.findViewById(R.id.iv_langehose9);
+        ivkurzeHose = (ImageView) main.findViewById(R.id.iv_kurzehose9);
+        ivTshirt = (ImageView) main.findViewById(R.id.iv_tshirt9);
+        ivPullover = (ImageView) main.findViewById(R.id.iv_pullover9);
+        ivDuenneJacke = (ImageView) main.findViewById(R.id.iv_duennejacke9);
+        ivDickeJacke = (ImageView) main.findViewById(R.id.iv_dickejacke9);
+        setUbersichtClothes(wd9.tempLow, wd9.tempHigh, main, tvJacke, tvOberteil, tvHose, ivMann, ivLangeHose,
+                ivkurzeHose, ivTshirt, ivPullover, ivDuenneJacke, ivDickeJacke);
+
+        //FELD 2
+        tvDatum = (TextView) main.findViewById(R.id.datum10);
+        WeatherData wd10 = weatherArray[9];
+        tvDatum.setText(df.format(wd10.date)); //FORMAT
+        tvJacke = (TextView) main.findViewById(R.id.tvJacke10);
+        tvOberteil = (TextView) main.findViewById(R.id.tvOberteil10);
+        tvHose = (TextView) main.findViewById(R.id.tvHose10);
+        ivMann = (ImageView) main.findViewById(R.id.iv_mann10);
+        ivLangeHose = (ImageView) main.findViewById(R.id.iv_langehose10);
+        ivkurzeHose = (ImageView) main.findViewById(R.id.iv_kurzehose10);
+        ivTshirt = (ImageView) main.findViewById(R.id.iv_tshirt10);
+        ivPullover = (ImageView) main.findViewById(R.id.iv_pullover10);
+        ivDuenneJacke = (ImageView) main.findViewById(R.id.iv_duennejacke10);
+        ivDickeJacke = (ImageView) main.findViewById(R.id.iv_dickejacke10);
+        setUbersichtClothes(wd10.tempLow, wd10.tempHigh, main, tvJacke, tvOberteil, tvHose, ivMann, ivLangeHose,
+                ivkurzeHose, ivTshirt, ivPullover, ivDuenneJacke, ivDickeJacke);
+
+    }
+
+    public static void setUbersichtClothes(int low, int high, ZehnTagesVorschau main, TextView tvJacke, TextView tvOberteil,
+                                           TextView tvHose, ImageView ivMann, ImageView ivLangeHose, ImageView ivkurzeHose, ImageView ivTshirt,
+                                           ImageView ivPullover, ImageView ivDuenneJacke, ImageView ivDickeJacke) {
+        Preferences pref = null;
+        SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(main.getApplicationContext());
+        String data = settings.getString("WhatToWear", "");
+
+        if (!data.equals("")) {
+            String[] x = data.split(";");
+            int jacke = Integer.parseInt(x[0]);
+            int hose = Integer.parseInt(x[1]);
+            String geschlecht = x[2];
+            pref = new Preferences(jacke, hose, geschlecht);
+        }
+
+
+        int mintemp = low;
+        int maxtemp = high;
+
+        float x = (maxtemp - mintemp) / 2.5f;
+        int val = Math.round(x);
+        int value = mintemp + val;
+
+        int temp = value;
+        if (pref != null) {
+            int valuejacke = pref.getValueJacke();
+            int valuehose = pref.getValueHose();
+
+            Kleidungstyp hose = Kleidungstyp.LANGEHOSE;
+            Kleidungstyp jacke = Kleidungstyp.DICKEJACKE;
+            Kleidungstyp oberteil = Kleidungstyp.PULLOVER;
+
+            ivMann.setVisibility(View.VISIBLE);
+            ivLangeHose.setVisibility(View.GONE);
+            ivkurzeHose.setVisibility(View.GONE);
+            ivPullover.setVisibility(View.GONE);
+            ivTshirt.setVisibility(View.GONE);
+            ivDuenneJacke.setVisibility(View.GONE);
+            ivDickeJacke.setVisibility(View.GONE);
+
+            //HOSE
+            if (temp >= valuehose) {
+                hose = Kleidungstyp.KURZEHOSE;
+            } else {
+                hose = Kleidungstyp.LANGEHOSE;
+            }
+
+            //JACKE
+            if (temp >= valuejacke + 6) {
+                oberteil= Kleidungstyp.TSHIRT;
+                jacke = Kleidungstyp.KEINEJACKE;
+            } else if (temp > valuejacke) {
+                oberteil = Kleidungstyp.TSHIRT;
+                jacke = Kleidungstyp.PULLOVER;
+            } else if (temp <= valuejacke) {
+                oberteil = Kleidungstyp.TSHIRT;
+                jacke = Kleidungstyp.DUENNEJACKE;
+            } else if (temp <= valuejacke - 4) {
+                oberteil = Kleidungstyp.PULLOVER;
+                jacke = Kleidungstyp.DUENNEJACKE;
+            } else if (temp <= valuejacke - 8) {
+                oberteil= Kleidungstyp.PULLOVER;
+                jacke = Kleidungstyp.DICKEJACKE;
+            }
+
+            //HOSE
+            switch (hose) {
+                case LANGEHOSE:
+                    //Zeige Bild für lange Hose an
+                    ivLangeHose.setVisibility(View.VISIBLE);
+                    tvHose.setText("Lange Hose");
+                    break;
+                case KURZEHOSE:
+                    //Zeige Bild für kurze Hose an
+                    ivkurzeHose.setVisibility(View.VISIBLE);
+                    tvHose.setText("Kurze Hose");
+                    break;
+            }
+
+            //OBERTEIL UND JACKE
+            if(oberteil == Kleidungstyp.TSHIRT && jacke == Kleidungstyp.KEINEJACKE){
+                ivTshirt.setVisibility(View.VISIBLE);
+                tvOberteil.setText("T-Shirt");
+                tvJacke.setText("Keine Jacke");
+            }else if(oberteil == Kleidungstyp.TSHIRT && jacke == Kleidungstyp.PULLOVER){
+                ivTshirt.setVisibility(View.VISIBLE);
+                ivPullover.setVisibility(View.VISIBLE);
+                tvOberteil.setText("T-Shirt");
+                tvJacke.setText("Pullover");
+            }else if(oberteil == Kleidungstyp.TSHIRT && jacke == Kleidungstyp.DUENNEJACKE){
+                ivTshirt.setVisibility(View.VISIBLE);
+                ivDuenneJacke.setVisibility(View.VISIBLE);
+                tvOberteil.setText("T-Shirt");
+                tvJacke.setText("dünne Jacke");
+            }else if(oberteil == Kleidungstyp.PULLOVER && jacke == Kleidungstyp.DUENNEJACKE){
+                ivTshirt.setVisibility(View.VISIBLE);
+                ivTshirt.setVisibility(View.VISIBLE);
+                ivDuenneJacke.setVisibility(View.VISIBLE);
+                tvOberteil.setText("Pullover");
+                tvJacke.setText("dünne Jacke");
+            }else if(oberteil == Kleidungstyp.PULLOVER && jacke == Kleidungstyp.DICKEJACKE){
+                ivTshirt.setVisibility(View.VISIBLE);
+                ivPullover.setVisibility(View.VISIBLE);
+                ivDickeJacke.setVisibility(View.VISIBLE);
+                tvOberteil.setText("T-Shirt & Pullover");
+                tvJacke.setText("dicke Jacke");
+            }
+
+        }
+    }
+
 
     public static String getDescriptionForCode(int code) {
         switch (code) {
