@@ -3,6 +3,7 @@ package com.example.htlgrk.whattowear;
 import android.Manifest;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
@@ -20,6 +21,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
@@ -77,6 +79,59 @@ public class G_Uebersicht extends AppCompatActivity implements YahooWheaterCallb
         writeToFile(pref);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        ConnectivityManager manager = (ConnectivityManager) getSystemService(CONNECTIVITY_SERVICE);
+        //For 3G check
+        boolean is3g = manager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE)
+                .isConnectedOrConnecting();
+        //For WiFi Check
+        boolean isWifi = manager.getNetworkInfo(ConnectivityManager.TYPE_WIFI)
+                .isConnectedOrConnecting();
+
+        final LocationManager managerGps = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        boolean isGPS = managerGps.isProviderEnabled(LocationManager.GPS_PROVIDER);
+
+
+        if(isWifi && !isGPS){
+            new AlertDialog.Builder(this)
+                    .setTitle("Information")
+                    .setMessage("Schalten Sie die Standortdienste ein!")
+                    .setNeutralButton("Schließen", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+
+                        }
+                    })
+                    .setIcon(android.R.drawable.ic_dialog_alert)
+                    .show();
+
+        }else if(!isWifi && !is3g && isGPS){
+            new AlertDialog.Builder(this)
+                    .setTitle("Information")
+                    .setMessage("Schalten Sie ihr Internet ein!")
+                    .setNeutralButton("Schließen", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+
+                        }
+                    })
+                    .setIcon(android.R.drawable.ic_dialog_alert)
+                    .show();
+        }else if(!isWifi && !is3g && !isGPS){
+            new AlertDialog.Builder(this)
+                    .setTitle("Information")
+                    .setMessage("Schalten Sie ihr Internet und die Standortdienste ein!")
+                    .setNeutralButton("Schließen", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+
+                        }
+                    })
+                    .setIcon(android.R.drawable.ic_dialog_alert)
+                    .show();
+        }
+
+
     }
 
     public boolean isConnectedToInternet(Context context) {
