@@ -57,7 +57,6 @@ public class G_Uebersicht extends AppCompatActivity implements YahooWheaterCallb
     LocationListener locationListener;
 
     String currentCity;
-
     boolean dataAlreadyExisted = false;
 
 
