@@ -62,8 +62,8 @@
             app:np_width="260dp"
             app:np_height="90dp"
             app:np_dividerColor="#FFFFFF"
-            app:np_max="35"
-            app:np_min="15"
+            app:np_max="30"
+            app:np_min="10"
             app:np_textColor="#FFFFFF"
             app:np_textSize="23dp"
             app:np_typeface="NORMAL" />
